@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -76,8 +77,26 @@ const FarmerDashboard = () => {
     { day: "VIE", temp: "23°", icon: Droplets, rain: "5mm", color: "from-purple-400 to-purple-600", textColor: "text-white" }
   ];
 
+  // Temperature value and color logic
+  const currentTemp = 22;
+  const getTemperatureColor = (temp: number) => {
+    if (temp < 10) {
+      return "from-blue-400 to-blue-600";
+    } else if (temp > 30) {
+      return "from-red-400 to-red-600";
+    } else {
+      return "from-yellow-300 to-yellow-600";
+    }
+  };
+
   const quickStats = [
-    { label: "Temperatura", value: "22°C", icon: Thermometer, color: "from-yellow-300 to-yellow-600", emoji: "🌡️" },
+    { 
+      label: "Temperatura", 
+      value: `${currentTemp}°C`, 
+      icon: Thermometer, 
+      color: getTemperatureColor(currentTemp), 
+      emoji: "🌡️" 
+    },
     { label: "Humedad", value: "78%", icon: Droplets, color: "from-blue-400 to-cyan-500", emoji: "💧" },
     { label: "Precio Café", value: "$2.85", icon: TrendingUp, color: "from-green-400 to-emerald-500", emoji: "📈" },
     { label: "Estado", value: "Óptimo", icon: Zap, color: "from-green-400 to-green-500", emoji: "⚡" }
