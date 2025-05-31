@@ -78,7 +78,7 @@ const FarmerDashboard = () => {
   ];
 
   // Temperature value and color logic
-  const currentTemp = 22;
+  const currentTemp = 10;
   const getTemperatureColor = (temp: number) => {
     if (temp < 10) {
       return "from-blue-400 to-blue-600";
