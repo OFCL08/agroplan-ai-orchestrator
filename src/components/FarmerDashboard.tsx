@@ -1,15 +1,55 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Thermometer, Droplets, Leaf, TrendingUp, Download, CheckCircle, AlertTriangle, Sun, Cloud, Zap, Activity } from "lucide-react";
+import { MapPin, Thermometer, Droplets, Leaf, TrendingUp, Download, CheckCircle, AlertTriangle, Sun, Cloud, Zap, Activity, RefreshCw } from "lucide-react";
+import { useGeolocation } from "@/hooks/useGeolocation";
+import { useWeatherData } from "@/hooks/useWeatherData";
+import WeatherApiKeySetup from "./WeatherApiKeySetup";
 
 const FarmerDashboard = () => {
-  const [coordinates] = useState({ lat: 9.9281, lng: -84.0907 });
+  const [apiKey, setApiKey] = useState(localStorage.getItem('openweather_api_key') || '');
+  const { latitude, longitude, loading: locationLoading, error: locationError } = useGeolocation();
+  const weatherData = useWeatherData(latitude, longitude);
+
+  // Show API key setup if no key is configured
+  if (!apiKey) {
+    return <WeatherApiKeySetup onApiKeySet={setApiKey} />;
+  }
+
+  // Show loading state while getting location
+  if (locationLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50 p-4 flex items-center justify-center">
+        <div className="text-center">
+          <RefreshCw className="h-12 w-12 animate-spin text-blue-500 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Obteniendo tu ubicación...</h2>
+          <p className="text-gray-600">Permitenos acceder a tu ubicación para datos precisos del clima</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error if location access failed
+  if (locationError) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50 p-4 flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Error de ubicación</h2>
+          <p className="text-gray-600 mb-4">{locationError}</p>
+          <Button onClick={() => window.location.reload()}>
+            Intentar de nuevo
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  const coordinates = { lat: latitude || 9.9281, lng: longitude || -84.0907 };
 
   const locationData = {
-    region: "Cartago, Costa Rica",
+    region: weatherData.location || "Cartago, Costa Rica",
     elevation: "1,435 msnm",
     soilType: "Andisol volcánico",
     microclimate: "Subtropical húmedo"
@@ -77,8 +117,8 @@ const FarmerDashboard = () => {
     { day: "VIE", temp: "23°", icon: Droplets, rain: "5mm", color: "from-purple-400 to-purple-600", textColor: "text-white" }
   ];
 
-  // Temperature value and color logic
-  const currentTemp = 9;
+  // Use real temperature data
+  const currentTemp = weatherData.loading ? 22 : weatherData.temperature;
   const getTemperatureColor = (temp: number) => {
     if (temp < 10) {
       return "from-blue-400 to-blue-600";
@@ -89,15 +129,22 @@ const FarmerDashboard = () => {
     }
   };
 
+  // Use real weather data for stats
   const quickStats = [
     { 
       label: "Temperatura", 
-      value: `${currentTemp}°C`, 
+      value: weatherData.loading ? "22°C" : `${currentTemp}°C`, 
       icon: Thermometer, 
       color: getTemperatureColor(currentTemp), 
       emoji: "🌡️" 
     },
-    { label: "Humedad", value: "78%", icon: Droplets, color: "from-blue-400 to-cyan-500", emoji: "💧" },
+    { 
+      label: "Humedad", 
+      value: weatherData.loading ? "78%" : `${weatherData.humidity}%`, 
+      icon: Droplets, 
+      color: "from-blue-400 to-cyan-500", 
+      emoji: "💧" 
+    },
     { label: "Precio Café", value: "$2.85", icon: TrendingUp, color: "from-green-400 to-emerald-500", emoji: "📈" },
     { label: "Estado", value: "Óptimo", icon: Zap, color: "from-green-400 to-green-500", emoji: "⚡" }
   ];
@@ -106,7 +153,7 @@ const FarmerDashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50 p-4">
       <div className="max-w-6xl mx-auto space-y-8">
         
-        {/* Header Súper Atractivo */}
+        {/* Header with real location data */}
         <div className="relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 opacity-90"></div>
           <div className="absolute inset-0 opacity-20">
@@ -125,6 +172,13 @@ const FarmerDashboard = () => {
                     <span className="text-lg">{locationData.region}</span>
                     <span className="text-lg">•</span>
                     <span className="text-lg">{locationData.elevation}</span>
+                    {weatherData.loading && (
+                      <>
+                        <span className="text-lg">•</span>
+                        <RefreshCw className="h-4 w-4 animate-spin" />
+                        <span className="text-sm">Actualizando...</span>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -166,7 +220,7 @@ const FarmerDashboard = () => {
           </div>
         </div>
 
-        {/* Stats Rápidas con Estilo */}
+        {/* Stats with real data */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {quickStats.map((stat, idx) => {
             const IconComponent = stat.icon;
@@ -268,9 +322,9 @@ const FarmerDashboard = () => {
         {/* Footer Minimalista */}
         <div className="bg-white/50 backdrop-blur-sm rounded-3xl p-6 text-center">
           <div className="flex items-center justify-center gap-8 text-sm text-gray-600">
-            <div>📍 {coordinates.lat}, {coordinates.lng}</div>
+            <div>📍 {coordinates.lat?.toFixed(4)}, {coordinates.lng?.toFixed(4)}</div>
             <div>🌱 {locationData.soilType}</div>
-            <div>🕐 Actualizado hace 5 min</div>
+            <div>🕐 Actualizado hace {weatherData.loading ? 'actualizando...' : '5 min'}</div>
           </div>
         </div>
 
