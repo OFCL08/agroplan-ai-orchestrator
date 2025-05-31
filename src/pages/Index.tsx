@@ -244,7 +244,7 @@ const Index = () => {
                 <Sprout className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">AgroPlan AgentNet</h1>
+                <h1 className="text-xl font-bold text-gray-900">AgroSync</h1>
                 <p className="text-sm text-gray-600">Simulación y Planificación Agrícola con IA</p>
               </div>
             </div>

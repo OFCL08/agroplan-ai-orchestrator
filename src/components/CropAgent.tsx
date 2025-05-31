@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,10 +5,17 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Sprout, Wheat, Coffee, Apple, TrendingUp, AlertCircle } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from "recharts";
+import { Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from "recharts";
+import { Unity, useUnityContext } from "react-unity-webgl";
 
 const CropAgent = () => {
   const [selectedCrop, setSelectedCrop] = useState("cafe");
+  const { unityProvider } = useUnityContext({
+    loaderUrl: "/Build/agri.loader.js",
+    dataUrl: "/Build/agri.data.br",
+    frameworkUrl: "/Build/agri.framework.js.br",
+    codeUrl: "/Build/agri.wasm.br"
+  });
 
   const crops = {
     cafe: {
@@ -207,25 +213,7 @@ const CropAgent = () => {
           </div>
 
           {/* Gráfico de rendimiento por región */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Rendimiento por Región</CardTitle>
-              <CardDescription>
-                Proyecciones de producción basadas en condiciones locales
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={350}>
-                <BarChart data={yieldData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="region" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey={selectedCrop} fill="#059669" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
+          <Unity unityProvider={unityProvider} style={{ width: '100%', height: '400px' }} />
         </TabsContent>
 
         <TabsContent value="optimization" className="space-y-6">
