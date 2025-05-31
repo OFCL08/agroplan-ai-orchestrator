@@ -20,21 +20,21 @@ const FarmerDashboard = () => {
       message: "Posible sequía en región Norte - Abril 2025",
       priority: "alta",
       icon: AlertTriangle,
-      color: "from-orange-400 to-red-500"
+      color: "from-amarillo-maiz to-orange-500"
     },
     {
       type: "success",
       message: "Condiciones óptimas para siembra de café detectadas",
       priority: "media",
       icon: CheckCircle,
-      color: "from-green-400 to-emerald-500"
+      color: "from-verde-hoja to-verde-oliva"
     },
     {
       type: "info",
       message: "Nuevos datos de mercado internacional disponibles",
       priority: "baja",
       icon: Activity,
-      color: "from-blue-400 to-cyan-500"
+      color: "from-azul-cielo to-blue-500"
     }
   ];
 
@@ -46,7 +46,7 @@ const FarmerDashboard = () => {
       title: "🌧️ Pausa el riego por 2 días",
       description: "Se esperan lluvias perfectas de 15-20mm",
       action: "Revisa los drenajes",
-      gradient: "from-blue-500 to-cyan-400"
+      gradient: "from-azul-cielo to-blue-500"
     },
     {
       category: "Nutrición",
@@ -55,7 +55,7 @@ const FarmerDashboard = () => {
       title: "🌱 Momento ideal para fertilizar",
       description: "Las plantas absorberán mejor los nutrientes",
       action: "Aplica antes de las 10:00 AM",
-      gradient: "from-green-500 to-emerald-400"
+      gradient: "from-verde-hoja to-verde-oliva"
     },
     {
       category: "Cosecha",
@@ -64,32 +64,32 @@ const FarmerDashboard = () => {
       title: "☕ Tu café está listo",
       description: "Humedad perfecta del 22% alcanzada",
       action: "Cosecha lotes 3 y 4 hoy",
-      gradient: "from-orange-500 to-amber-400"
+      gradient: "from-tierra-calida to-amber-600"
     }
   ];
 
   const weeklyCards = [
-    { day: "HOY", temp: "22°", icon: Sun, rain: "15mm", color: "from-yellow-400 to-orange-500", textColor: "text-white" },
-    { day: "MAÑ", temp: "21°", icon: Cloud, rain: "8mm", color: "from-gray-400 to-gray-600", textColor: "text-white" },
-    { day: "MIÉ", temp: "24°", icon: Sun, rain: "2mm", color: "from-blue-400 to-blue-600", textColor: "text-white" },
-    { day: "JUE", temp: "25°", icon: Sun, rain: "0mm", color: "from-green-400 to-green-600", textColor: "text-white" },
-    { day: "VIE", temp: "23°", icon: Droplets, rain: "5mm", color: "from-purple-400 to-purple-600", textColor: "text-white" }
+    { day: "HOY", temp: "22°", icon: Sun, rain: "15mm", color: "from-amarillo-maiz to-orange-500", textColor: "text-gris-piedra" },
+    { day: "MAÑ", temp: "21°", icon: Cloud, rain: "8mm", color: "from-azul-cielo to-blue-500", textColor: "text-white" },
+    { day: "MIÉ", temp: "24°", icon: Sun, rain: "2mm", color: "from-verde-oliva to-verde-hoja", textColor: "text-white" },
+    { day: "JUE", temp: "25°", icon: Sun, rain: "0mm", color: "from-verde-hoja to-emerald-600", textColor: "text-white" },
+    { day: "VIE", temp: "23°", icon: Droplets, rain: "5mm", color: "from-tierra-calida to-amber-600", textColor: "text-white" }
   ];
 
   const quickStats = [
-    { label: "Temperatura", value: "22°C", icon: Thermometer, color: "from-red-400 to-pink-500", emoji: "🌡️" },
-    { label: "Humedad", value: "78%", icon: Droplets, color: "from-blue-400 to-cyan-500", emoji: "💧" },
-    { label: "Precio Café", value: "$2.85", icon: TrendingUp, color: "from-green-400 to-emerald-500", emoji: "📈" },
-    { label: "Estado", value: "Óptimo", icon: Zap, color: "from-yellow-400 to-orange-500", emoji: "⚡" }
+    { label: "Temperatura", value: "22°C", icon: Thermometer, color: "from-tierra-calida to-red-500", emoji: "🌡️" },
+    { label: "Humedad", value: "78%", icon: Droplets, color: "from-azul-cielo to-blue-500", emoji: "💧" },
+    { label: "Precio Café", value: "$2.85", icon: TrendingUp, color: "from-verde-hoja to-verde-oliva", emoji: "📈" },
+    { label: "Estado", value: "Óptimo", icon: Zap, color: "from-amarillo-maiz to-orange-500", emoji: "⚡" }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blanco-natural via-azul-cielo/20 to-verde-oliva/20 p-4">
       <div className="max-w-6xl mx-auto space-y-8">
         
-        {/* Header Súper Atractivo */}
+        {/* Header con paleta natural */}
         <div className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 opacity-90"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-verde-hoja via-verde-oliva to-tierra-calida opacity-90"></div>
           <div className="absolute inset-0 opacity-20">
             <div className="w-full h-full bg-white/10 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:20px_20px]"></div>
           </div>
@@ -101,7 +101,7 @@ const FarmerDashboard = () => {
                 </div>
                 <div>
                   <h1 className="text-4xl font-bold mb-2">🌱 Mi Finca Inteligente</h1>
-                  <div className="flex items-center gap-3 text-emerald-100">
+                  <div className="flex items-center gap-3 text-white/80">
                     <MapPin className="h-5 w-5" />
                     <span className="text-lg">{locationData.region}</span>
                     <span className="text-lg">•</span>
@@ -117,9 +117,9 @@ const FarmerDashboard = () => {
           </div>
         </div>
 
-        {/* Alertas del Sistema */}
+        {/* Alertas del Sistema con nueva paleta */}
         <div className="space-y-6">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">🚨 Alertas del Sistema</h2>
+          <h2 className="text-3xl font-bold text-gris-piedra mb-6">🚨 Alertas del Sistema</h2>
           <div className="grid gap-6">
             {alerts.map((alert, idx) => {
               const IconComponent = alert.icon;
@@ -147,7 +147,7 @@ const FarmerDashboard = () => {
           </div>
         </div>
 
-        {/* Stats Rápidas con Estilo */}
+        {/* Stats Rápidas con nueva paleta */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {quickStats.map((stat, idx) => {
             const IconComponent = stat.icon;
@@ -166,9 +166,9 @@ const FarmerDashboard = () => {
           })}
         </div>
 
-        {/* Recomendaciones Súper Visuales */}
+        {/* Recomendaciones con nueva paleta */}
         <div className="space-y-6">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">✨ Recomendaciones de Hoy</h2>
+          <h2 className="text-3xl font-bold text-gris-piedra mb-6">✨ Recomendaciones de Hoy</h2>
           <div className="grid gap-6">
             {todayRecommendations.map((rec, idx) => {
               const IconComponent = rec.icon;
@@ -197,9 +197,9 @@ const FarmerDashboard = () => {
           </div>
         </div>
 
-        {/* Pronóstico Visual */}
+        {/* Pronóstico con nueva paleta */}
         <div className="space-y-6">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">🌤️ Esta Semana</h2>
+          <h2 className="text-3xl font-bold text-gris-piedra mb-6">🌤️ Esta Semana</h2>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {weeklyCards.map((day, idx) => {
               const IconComponent = day.icon;
@@ -219,36 +219,36 @@ const FarmerDashboard = () => {
           </div>
         </div>
 
-        {/* Estado del Cultivo Simplificado */}
+        {/* Estado del Cultivo con nueva paleta */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-gradient-to-br from-green-400 to-emerald-500 rounded-3xl p-8 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
+          <div className="bg-gradient-to-br from-verde-hoja to-verde-oliva rounded-3xl p-8 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
             <div className="text-center">
               <div className="text-6xl mb-4">🌸</div>
               <h3 className="text-2xl font-bold mb-2">Floración</h3>
-              <p className="text-green-100">Etapa actual del cultivo</p>
+              <p className="text-white/80">Etapa actual del cultivo</p>
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl p-8 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
+          <div className="bg-gradient-to-br from-azul-cielo to-blue-500 rounded-3xl p-8 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
             <div className="text-center">
               <div className="text-6xl mb-4">💚</div>
               <h3 className="text-2xl font-bold mb-2">Excelente</h3>
-              <p className="text-blue-100">Salud del cultivo</p>
+              <p className="text-white/80">Salud del cultivo</p>
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-purple-400 to-purple-600 rounded-3xl p-8 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
+          <div className="bg-gradient-to-br from-tierra-calida to-amber-600 rounded-3xl p-8 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
             <div className="text-center">
               <div className="text-6xl mb-4">📈</div>
               <h3 className="text-2xl font-bold mb-2">+12%</h3>
-              <p className="text-purple-100">Sobre el promedio</p>
+              <p className="text-white/80">Sobre el promedio</p>
             </div>
           </div>
         </div>
 
-        {/* Footer Minimalista */}
-        <div className="bg-white/50 backdrop-blur-sm rounded-3xl p-6 text-center">
-          <div className="flex items-center justify-center gap-8 text-sm text-gray-600">
+        {/* Footer con nueva paleta */}
+        <div className="bg-blanco-natural/80 backdrop-blur-sm rounded-3xl p-6 text-center border border-verde-oliva/20">
+          <div className="flex items-center justify-center gap-8 text-sm text-gris-piedra">
             <div>📍 {coordinates.lat}, {coordinates.lng}</div>
             <div>🌱 {locationData.soilType}</div>
             <div>🕐 Actualizado hace 5 min</div>
