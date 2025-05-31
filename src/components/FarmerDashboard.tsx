@@ -3,10 +3,10 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Thermometer, Droplets, Leaf, TrendingUp, Download, CheckCircle, AlertTriangle, Sun } from "lucide-react";
+import { MapPin, Thermometer, Droplets, Leaf, TrendingUp, Download, CheckCircle, AlertTriangle, Sun, Cloud, Zap } from "lucide-react";
 
 const FarmerDashboard = () => {
-  const [coordinates] = useState({ lat: 9.9281, lng: -84.0907 }); // Coordenadas de Costa Rica
+  const [coordinates] = useState({ lat: 9.9281, lng: -84.0907 });
 
   const locationData = {
     region: "Cartago, Costa Rica",
@@ -20,262 +20,186 @@ const FarmerDashboard = () => {
       category: "Riego",
       priority: "alta",
       icon: Droplets,
-      title: "Suspender riego por 2 días",
-      description: "Se esperan 15-20mm de lluvia en las próximas 48 horas",
-      action: "Revisar drenajes"
+      title: "🌧️ Pausa el riego por 2 días",
+      description: "Se esperan lluvias perfectas de 15-20mm",
+      action: "Revisa los drenajes",
+      gradient: "from-blue-500 to-cyan-400"
     },
     {
       category: "Nutrición",
       priority: "media",
       icon: Leaf,
-      title: "Aplicar fertilizante foliar",
-      description: "Condiciones óptimas para absorción de nutrientes",
-      action: "Aplicar antes de las 10:00 AM"
+      title: "🌱 Momento ideal para fertilizar",
+      description: "Las plantas absorberán mejor los nutrientes",
+      action: "Aplica antes de las 10:00 AM",
+      gradient: "from-green-500 to-emerald-400"
     },
     {
       category: "Cosecha",
       priority: "alta",
       icon: CheckCircle,
-      title: "Ventana óptima de cosecha",
-      description: "Café alcanzó 22% de humedad ideal",
-      action: "Cosechar lotes 3 y 4"
+      title: "☕ Tu café está listo",
+      description: "Humedad perfecta del 22% alcanzada",
+      action: "Cosecha lotes 3 y 4 hoy",
+      gradient: "from-orange-500 to-amber-400"
     }
   ];
 
-  const weeklyForecast = [
-    { day: "Hoy", temp: "22°C", rain: "15mm", humidity: "78%", recommendation: "Suspender riego" },
-    { day: "Mañana", temp: "21°C", rain: "8mm", humidity: "82%", recommendation: "Monitorear plagas" },
-    { day: "Miércoles", temp: "24°C", rain: "2mm", humidity: "65%", recommendation: "Riego ligero" },
-    { day: "Jueves", temp: "25°C", rain: "0mm", humidity: "58%", recommendation: "Riego normal" },
-    { day: "Viernes", temp: "23°C", rain: "5mm", humidity: "72%", recommendation: "Fertilización foliar" }
+  const weeklyCards = [
+    { day: "HOY", temp: "22°", icon: Sun, rain: "15mm", color: "from-yellow-400 to-orange-500", textColor: "text-white" },
+    { day: "MAÑ", temp: "21°", icon: Cloud, rain: "8mm", color: "from-gray-400 to-gray-600", textColor: "text-white" },
+    { day: "MIÉ", temp: "24°", icon: Sun, rain: "2mm", color: "from-blue-400 to-blue-600", textColor: "text-white" },
+    { day: "JUE", temp: "25°", icon: Sun, rain: "0mm", color: "from-green-400 to-green-600", textColor: "text-white" },
+    { day: "VIE", temp: "23°", icon: Droplets, rain: "5mm", color: "from-purple-400 to-purple-600", textColor: "text-white" }
   ];
 
-  const keyMetrics = [
-    { label: "Temperatura", value: "22°C", status: "optimal", icon: Thermometer },
-    { label: "Humedad", value: "78%", status: "high", icon: Droplets },
-    { label: "Precipitación", value: "15mm", status: "good", icon: Sun },
-    { label: "Precio Café", value: "$2.85/kg", status: "rising", icon: TrendingUp }
+  const quickStats = [
+    { label: "Temperatura", value: "22°C", icon: Thermometer, color: "from-red-400 to-pink-500", emoji: "🌡️" },
+    { label: "Humedad", value: "78%", icon: Droplets, color: "from-blue-400 to-cyan-500", emoji: "💧" },
+    { label: "Precio Café", value: "$2.85", icon: TrendingUp, color: "from-green-400 to-emerald-500", emoji: "📈" },
+    { label: "Estado", value: "Óptimo", icon: Zap, color: "from-yellow-400 to-orange-500", emoji: "⚡" }
   ];
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "optimal": return "text-green-600 bg-green-50 border-green-200";
-      case "good": return "text-blue-600 bg-blue-50 border-blue-200";
-      case "high": return "text-orange-600 bg-orange-50 border-orange-200";
-      case "rising": return "text-emerald-600 bg-emerald-50 border-emerald-200";
-      default: return "text-gray-600 bg-gray-50 border-gray-200";
-    }
-  };
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case "alta": return "border-red-400 bg-red-50";
-      case "media": return "border-yellow-400 bg-yellow-50";
-      case "baja": return "border-green-400 bg-green-50";
-      default: return "border-gray-400 bg-gray-50";
-    }
-  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-emerald-50 p-4">
-      <div className="max-w-6xl mx-auto space-y-6">
-        {/* Header */}
-        <Card className="bg-gradient-to-r from-green-600 to-emerald-700 text-white">
-          <CardHeader>
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50 p-4">
+      <div className="max-w-6xl mx-auto space-y-8">
+        
+        {/* Header Súper Atractivo */}
+        <div className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 opacity-90"></div>
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="4"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+          <div className="relative p-8 text-white">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="bg-white/20 p-3 rounded-full">
-                  <MapPin className="h-8 w-8" />
+              <div className="flex items-center gap-6">
+                <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
+                  <Leaf className="h-12 w-12 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-2xl">Mi Finca Inteligente</CardTitle>
-                  <CardDescription className="text-green-100 flex items-center gap-2">
-                    <MapPin className="h-4 w-4" />
-                    {locationData.region} • {locationData.elevation}
-                  </CardDescription>
+                  <h1 className="text-4xl font-bold mb-2">🌱 Mi Finca Inteligente</h1>
+                  <div className="flex items-center gap-3 text-emerald-100">
+                    <MapPin className="h-5 w-5" />
+                    <span className="text-lg">{locationData.region}</span>
+                    <span className="text-lg">•</span>
+                    <span className="text-lg">{locationData.elevation}</span>
+                  </div>
                 </div>
               </div>
-              <Button variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-white/30">
-                <Download className="h-4 w-4 mr-2" />
-                Reporte Completo
+              <Button className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white border-white/30 text-lg px-8 py-6 rounded-2xl">
+                <Download className="h-6 w-6 mr-3" />
+                Descargar Reporte Completo
               </Button>
             </div>
-          </CardHeader>
-        </Card>
+          </div>
+        </div>
 
-        {/* Métricas principales */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {keyMetrics.map((metric, idx) => {
-            const IconComponent = metric.icon;
+        {/* Stats Rápidas con Estilo */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {quickStats.map((stat, idx) => {
+            const IconComponent = stat.icon;
             return (
-              <Card key={idx} className={`border-2 ${getStatusColor(metric.status)}`}>
-                <CardContent className="p-4 text-center">
-                  <IconComponent className="h-8 w-8 mx-auto mb-2" />
-                  <p className="text-2xl font-bold">{metric.value}</p>
-                  <p className="text-sm font-medium">{metric.label}</p>
-                </CardContent>
-              </Card>
+              <div key={idx} className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${stat.color} p-6 text-white transform hover:scale-105 transition-all duration-300 shadow-xl`}>
+                <div className="absolute top-2 right-2 text-3xl opacity-80">{stat.emoji}</div>
+                <div className="flex flex-col h-full justify-between">
+                  <IconComponent className="h-8 w-8 mb-3" />
+                  <div>
+                    <p className="text-3xl font-bold mb-1">{stat.value}</p>
+                    <p className="text-white/90 text-sm font-medium">{stat.label}</p>
+                  </div>
+                </div>
+              </div>
             );
           })}
         </div>
 
-        {/* Recomendaciones de hoy */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <CheckCircle className="h-5 w-5 text-green-600" />
-              Recomendaciones para Hoy
-            </CardTitle>
-            <CardDescription>
-              Acciones prioritarias basadas en condiciones actuales
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {todayRecommendations.map((rec, idx) => {
-                const IconComponent = rec.icon;
-                return (
-                  <div key={idx} className={`p-4 rounded-lg border-l-4 ${getPriorityColor(rec.priority)}`}>
-                    <div className="flex items-start gap-4">
-                      <div className="bg-white p-2 rounded-full">
-                        <IconComponent className="h-5 w-5 text-gray-700" />
+        {/* Recomendaciones Súper Visuales */}
+        <div className="space-y-6">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">✨ Recomendaciones de Hoy</h2>
+          <div className="grid gap-6">
+            {todayRecommendations.map((rec, idx) => {
+              const IconComponent = rec.icon;
+              return (
+                <div key={idx} className={`relative overflow-hidden rounded-3xl bg-gradient-to-r ${rec.gradient} p-8 text-white transform hover:scale-[1.02] transition-all duration-300 shadow-2xl`}>
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <IconComponent className="h-24 w-24" />
+                  </div>
+                  <div className="relative z-10">
+                    <div className="flex items-start gap-6">
+                      <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
+                        <IconComponent className="h-8 w-8" />
                       </div>
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-semibold text-gray-800">{rec.title}</h4>
-                          <Badge 
-                            variant={rec.priority === "alta" ? "destructive" : "secondary"}
-                            className="text-xs"
-                          >
-                            {rec.priority}
-                          </Badge>
+                        <h3 className="text-2xl font-bold mb-2">{rec.title}</h3>
+                        <p className="text-white/90 text-lg mb-4">{rec.description}</p>
+                        <div className="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full inline-block">
+                          <span className="font-semibold">✓ {rec.action}</span>
                         </div>
-                        <p className="text-gray-600 text-sm mb-2">{rec.description}</p>
-                        <p className="text-sm font-medium text-gray-800">
-                          ✓ {rec.action}
-                        </p>
                       </div>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Pronóstico de la semana */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Sun className="h-5 w-5 text-yellow-600" />
-              Pronóstico Semanal
-            </CardTitle>
-            <CardDescription>
-              Planifica tus actividades agrícolas
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-              {weeklyForecast.map((day, idx) => (
-                <div key={idx} className="bg-gradient-to-b from-blue-50 to-blue-100 p-4 rounded-lg text-center">
-                  <h4 className="font-semibold text-gray-800 mb-2">{day.day}</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center justify-center gap-1">
-                      <Thermometer className="h-3 w-3 text-red-500" />
-                      <span>{day.temp}</span>
-                    </div>
-                    <div className="flex items-center justify-center gap-1">
-                      <Droplets className="h-3 w-3 text-blue-500" />
-                      <span>{day.rain}</span>
-                    </div>
-                    <div className="text-xs text-gray-600">
-                      Humedad: {day.humidity}
-                    </div>
-                  </div>
-                  <div className="mt-3 p-2 bg-white/60 rounded text-xs font-medium">
-                    {day.recommendation}
-                  </div>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Estado del cultivo */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Leaf className="h-5 w-5 text-green-600" />
-                Estado del Cultivo
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                <span className="text-sm font-medium">Etapa de Crecimiento</span>
-                <Badge variant="default">Floración</Badge>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                <span className="text-sm font-medium">Salud del Cultivo</span>
-                <Badge variant="default" className="bg-green-600">Excelente</Badge>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
-                <span className="text-sm font-medium">Rendimiento Esperado</span>
-                <span className="font-semibold text-green-600">+12% vs promedio</span>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-orange-600" />
-                Alertas y Monitoreo
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-start gap-3 p-3 bg-green-50 border-l-4 border-green-500 rounded-r-lg">
-                <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
-                <div>
-                  <p className="text-sm font-medium text-green-800">Sin plagas detectadas</p>
-                  <p className="text-xs text-green-600">Última inspección: Ayer</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-3 p-3 bg-yellow-50 border-l-4 border-yellow-500 rounded-r-lg">
-                <AlertTriangle className="h-4 w-4 text-yellow-600 mt-0.5" />
-                <div>
-                  <p className="text-sm font-medium text-yellow-800">Monitorear humedad del suelo</p>
-                  <p className="text-xs text-yellow-600">Revisar en 2 días</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Información de ubicación */}
-        <Card className="bg-gradient-to-r from-gray-50 to-gray-100">
-          <CardContent className="p-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-              <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide">Coordenadas</p>
-                <p className="font-mono text-sm">{coordinates.lat}, {coordinates.lng}</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide">Tipo de Suelo</p>
-                <p className="text-sm font-medium">{locationData.soilType}</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide">Microclima</p>
-                <p className="text-sm font-medium">{locationData.microclimate}</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide">Última Actualización</p>
-                <p className="text-sm font-medium">Hace 5 minutos</p>
-              </div>
+        {/* Pronóstico Visual */}
+        <div className="space-y-6">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">🌤️ Esta Semana</h2>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            {weeklyCards.map((day, idx) => {
+              const IconComponent = day.icon;
+              return (
+                <div key={idx} className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${day.color} p-6 text-center transform hover:scale-105 transition-all duration-300 shadow-xl`}>
+                  <div className="space-y-3">
+                    <h3 className={`font-bold text-lg ${day.textColor}`}>{day.day}</h3>
+                    <IconComponent className={`h-12 w-12 mx-auto ${day.textColor}`} />
+                    <div className={`${day.textColor}`}>
+                      <p className="text-2xl font-bold">{day.temp}</p>
+                      <p className="text-sm opacity-90">{day.rain}</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Estado del Cultivo Simplificado */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-gradient-to-br from-green-400 to-emerald-500 rounded-3xl p-8 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
+            <div className="text-center">
+              <div className="text-6xl mb-4">🌸</div>
+              <h3 className="text-2xl font-bold mb-2">Floración</h3>
+              <p className="text-green-100">Etapa actual del cultivo</p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+
+          <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl p-8 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
+            <div className="text-center">
+              <div className="text-6xl mb-4">💚</div>
+              <h3 className="text-2xl font-bold mb-2">Excelente</h3>
+              <p className="text-blue-100">Salud del cultivo</p>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-400 to-purple-600 rounded-3xl p-8 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
+            <div className="text-center">
+              <div className="text-6xl mb-4">📈</div>
+              <h3 className="text-2xl font-bold mb-2">+12%</h3>
+              <p className="text-purple-100">Sobre el promedio</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer Minimalista */}
+        <div className="bg-white/50 backdrop-blur-sm rounded-3xl p-6 text-center">
+          <div className="flex items-center justify-center gap-8 text-sm text-gray-600">
+            <div>📍 {coordinates.lat}, {coordinates.lng}</div>
+            <div>🌱 {locationData.soilType}</div>
+            <div>🕐 Actualizado hace 5 min</div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
