@@ -1,84 +1,109 @@
-
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { MapPin, Thermometer, Droplets, Leaf, TrendingUp, Download, CheckCircle, AlertTriangle, Sun, Cloud, Zap, Activity } from "lucide-react";
+import { MapPin, Thermometer, Droplets, TrendingUp, Download, Zap } from "lucide-react";
+import { getLocationData, alerts, todayRecommendations, weeklyCards } from "@/constants/dashboardData";
+import ChatBot from "./ChatBot";
+
+// Hardcoded data for development
+const MOCK_DATA = {
+  coordinates: {
+    latitude: 9.9281,
+    longitude: -84.0907,
+  },
+  forecast: {
+    humidity: 78,
+    condition: "Óptimo",
+    price: 2.85
+  },
+  historical: {
+    weeklyTemperatures: [22, 23, 24, 25, 23, 24, 25],
+    weeklyHumidity: [75, 78, 76, 77, 78, 75, 74]
+  }
+};
+
+interface ForecastResponse {
+  hourly: {
+    temperature_2m: number[];
+    relative_humidity_2m: number[];
+  };
+  elevation: number;
+}
 
 const FarmerDashboard = () => {
-  const [coordinates] = useState({ lat: 9.9281, lng: -84.0907 });
+  const [coordinates, setCoordinates] = useState(MOCK_DATA.coordinates);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [currentTemp, setCurrentTemp] = useState<number | null>(null);
+  const [currentHumidity, setCurrentHumidity] = useState<number | null>(null);
+  const [elevation, setElevation] = useState<number | null>(null);
 
-  const locationData = {
-    region: "Cartago, Costa Rica",
-    elevation: "1,435 msnm",
-    soilType: "Andisol volcánico",
-    microclimate: "Subtropical húmedo"
-  };
+  // Get user's location and fetch forecast
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const coords = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
+          setCoordinates(coords);
+          setError(null);
 
-  const alerts = [
-    {
-      type: "warning",
-      message: "Posible sequía en región Norte - Abril 2025",
-      priority: "alta",
-      icon: AlertTriangle,
-      color: "from-orange-400 to-red-500"
-    },
-    {
-      type: "success",
-      message: "Condiciones óptimas para siembra de café detectadas",
-      priority: "media",
-      icon: CheckCircle,
-      color: "from-green-400 to-emerald-500"
-    },
-    {
-      type: "info",
-      message: "Nuevos datos de mercado internacional disponibles",
-      priority: "baja",
-      icon: Activity,
-      color: "from-blue-400 to-cyan-500"
+          // Fetch forecast data
+          try {
+            const response = await fetch(`http://ec2-44-244-36-34.us-west-2.compute.amazonaws.com:8000/forecast_data`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                sensor_id: "default_sensor",
+                latitude: coords.latitude,
+                longitude: coords.longitude,
+              }),
+            });
+
+            if (!response.ok) {
+              throw new Error('Failed to fetch forecast data');
+            }
+
+            const data: ForecastResponse = await response.json();
+            
+            // Get the elevation and weather data
+            setElevation(data.elevation);
+            if (data.hourly?.temperature_2m?.length > 0) {
+              setCurrentTemp(data.hourly.temperature_2m[0]);
+            }
+            if (data.hourly?.relative_humidity_2m?.length > 0) {
+              setCurrentHumidity(data.hourly.relative_humidity_2m[0]);
+            }
+            if (!data.hourly?.temperature_2m?.length && !data.hourly?.relative_humidity_2m?.length) {
+              throw new Error('No weather data available');
+            }
+          } catch (err) {
+            console.error('Error fetching forecast:', err);
+            setError('Error fetching weather data. Using default values.');
+            setCurrentTemp(24); // Fallback temperature
+            setCurrentHumidity(78); // Fallback humidity
+          }
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          setError("Unable to get your location. Using default coordinates.");
+          setCurrentTemp(24); // Fallback temperature
+          setCurrentHumidity(78); // Fallback humidity
+        }
+      );
+    } else {
+      setError("Geolocation is not supported by your browser. Using default coordinates.");
+      setCurrentTemp(24); // Fallback temperature
+      setCurrentHumidity(78); // Fallback humidity
     }
-  ];
+  }, []);
 
-  const todayRecommendations = [
-    {
-      category: "Riego",
-      priority: "alta",
-      icon: Droplets,
-      title: "🌧️ Pausa el riego por 2 días",
-      description: "Se esperan lluvias perfectas de 15-20mm",
-      action: "Revisa los drenajes",
-      gradient: "from-blue-500 to-cyan-400"
-    },
-    {
-      category: "Nutrición",
-      priority: "media",
-      icon: Leaf,
-      title: "🌱 Momento ideal para fertilizar",
-      description: "Las plantas absorberán mejor los nutrientes",
-      action: "Aplica antes de las 10:00 AM",
-      gradient: "from-green-500 to-emerald-400"
-    },
-    {
-      category: "Cosecha",
-      priority: "alta",
-      icon: CheckCircle,
-      title: "☕ Tu café está listo",
-      description: "Humedad perfecta del 22% alcanzada",
-      action: "Cosecha lotes 3 y 4 hoy",
-      gradient: "from-orange-500 to-amber-400"
-    }
-  ];
+  const locationData = getLocationData(coordinates);
 
-  const weeklyCards = [
-    { day: "HOY", temp: "22°", icon: Sun, rain: "15mm", color: "from-yellow-400 to-orange-500", textColor: "text-white" },
-    { day: "MAÑ", temp: "21°", icon: Cloud, rain: "8mm", color: "from-gray-400 to-gray-600", textColor: "text-white" },
-    { day: "MIÉ", temp: "24°", icon: Sun, rain: "2mm", color: "from-blue-400 to-blue-600", textColor: "text-white" },
-    { day: "JUE", temp: "25°", icon: Sun, rain: "0mm", color: "from-green-400 to-green-600", textColor: "text-white" },
-    { day: "VIE", temp: "23°", icon: Droplets, rain: "5mm", color: "from-purple-400 to-purple-600", textColor: "text-white" }
-  ];
-
-  // Temperature value and color logic
-  const currentTemp = 20;
+  // Temperature color logic
   const getTemperatureColor = (temp: number) => {
     if (temp < 10) {
       return "from-blue-400 to-blue-600";
@@ -89,23 +114,70 @@ const FarmerDashboard = () => {
     }
   };
 
+  // Humidity color logic
+  const getHumidityColor = (humidity: number) => {
+    if (humidity < 30) {
+      return "from-yellow-400 to-yellow-600"; // Dry
+    } else if (humidity > 70) {
+      return "from-blue-600 to-blue-800"; // Very humid
+    } else {
+      return "from-blue-400 to-cyan-500"; // Normal
+    }
+  };
+
   const quickStats = [
-    { 
-      label: "Temperatura", 
-      value: `${currentTemp}°C`, 
-      icon: Thermometer, 
-      color: getTemperatureColor(currentTemp), 
-      emoji: "🌡️" 
+    {
+      label: "Temperatura",
+      value: currentTemp ? `${currentTemp.toFixed(1)}°C` : "Cargando...",
+      icon: Thermometer,
+      color: currentTemp ? getTemperatureColor(currentTemp) : "from-gray-400 to-gray-600",
+      emoji: "🌡️"
     },
-    { label: "Humedad", value: "78%", icon: Droplets, color: "from-blue-400 to-cyan-500", emoji: "💧" },
-    { label: "Precio Café", value: "$2.85", icon: TrendingUp, color: "from-green-400 to-emerald-500", emoji: "📈" },
-    { label: "Estado", value: "Óptimo", icon: Zap, color: "from-green-400 to-green-500", emoji: "⚡" }
+    { 
+      label: "Humedad", 
+      value: currentHumidity ? `${currentHumidity.toFixed(0)}%` : "Cargando...", 
+      icon: Droplets, 
+      color: currentHumidity ? getHumidityColor(currentHumidity) : "from-gray-400 to-gray-600", 
+      emoji: "💧" 
+    },
+    { 
+      label: "Precio Café", 
+      value: `$${MOCK_DATA.forecast.price}`, 
+      icon: TrendingUp, 
+      color: "from-green-400 to-emerald-500", 
+      emoji: "📈" 
+    },
+    { 
+      label: "Estado", 
+      value: MOCK_DATA.forecast.condition, 
+      icon: Zap, 
+      color: "from-green-400 to-green-500", 
+      emoji: "⚡" 
+    }
   ];
+
+  // Add loading state display
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50 p-4 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-emerald-500 mx-auto mb-4"></div>
+          <p className="text-lg text-gray-600">Cargando los datos de tu finca...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50 p-4">
       <div className="max-w-6xl mx-auto space-y-8">
-        
+        {error && (
+          <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">
+            <strong className="font-bold">Note: </strong>
+            <span className="block sm:inline">{error}</span>
+          </div>
+        )}
+
         {/* Header Súper Atractivo */}
         <div className="relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 opacity-90"></div>
@@ -116,15 +188,15 @@ const FarmerDashboard = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-6">
                 <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
-                  <Leaf className="h-12 w-12 text-white" />
+                  <MapPin className="h-12 w-12 text-white" />
                 </div>
                 <div>
                   <h1 className="text-4xl font-bold mb-2">🌱 Mi Finca Inteligente</h1>
                   <div className="flex items-center gap-3 text-emerald-100">
                     <MapPin className="h-5 w-5" />
-                    <span className="text-lg">{locationData.region}</span>
+                    <span className="text-lg">{`${coordinates.latitude.toFixed(4)}°N, ${coordinates.longitude.toFixed(4)}°W`}</span>
                     <span className="text-lg">•</span>
-                    <span className="text-lg">{locationData.elevation}</span>
+                    <span className="text-lg">{elevation ? `${elevation}m snm` : 'Cargando...'}</span>
                   </div>
                 </div>
               </div>
@@ -134,6 +206,25 @@ const FarmerDashboard = () => {
               </Button>
             </div>
           </div>
+        </div>
+
+        {/* Stats Rápidas con Estilo */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {quickStats.map((stat, idx) => {
+            const IconComponent = stat.icon;
+            return (
+              <div key={idx} className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${stat.color} p-6 text-white transform hover:scale-105 transition-all duration-300 shadow-xl`}>
+                <div className="absolute top-2 right-2 text-3xl opacity-80">{stat.emoji}</div>
+                <div className="flex flex-col h-full justify-between">
+                  <IconComponent className="h-8 w-8 mb-3" />
+                  <div>
+                    <p className="text-3xl font-bold mb-1">{stat.value}</p>
+                    <p className="text-white/90 text-sm font-medium">{stat.label}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         {/* Alertas del Sistema */}
@@ -164,25 +255,6 @@ const FarmerDashboard = () => {
               );
             })}
           </div>
-        </div>
-
-        {/* Stats Rápidas con Estilo */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {quickStats.map((stat, idx) => {
-            const IconComponent = stat.icon;
-            return (
-              <div key={idx} className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${stat.color} p-6 text-white transform hover:scale-105 transition-all duration-300 shadow-xl`}>
-                <div className="absolute top-2 right-2 text-3xl opacity-80">{stat.emoji}</div>
-                <div className="flex flex-col h-full justify-between">
-                  <IconComponent className="h-8 w-8 mb-3" />
-                  <div>
-                    <p className="text-3xl font-bold mb-1">{stat.value}</p>
-                    <p className="text-white/90 text-sm font-medium">{stat.label}</p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
         </div>
 
         {/* Recomendaciones Súper Visuales */}
@@ -237,44 +309,10 @@ const FarmerDashboard = () => {
             })}
           </div>
         </div>
-
-        {/* Estado del Cultivo Simplificado */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-gradient-to-br from-green-400 to-emerald-500 rounded-3xl p-8 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
-            <div className="text-center">
-              <div className="text-6xl mb-4">🌸</div>
-              <h3 className="text-2xl font-bold mb-2">Floración</h3>
-              <p className="text-green-100">Etapa actual del cultivo</p>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl p-8 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
-            <div className="text-center">
-              <div className="text-6xl mb-4">💚</div>
-              <h3 className="text-2xl font-bold mb-2">Excelente</h3>
-              <p className="text-blue-100">Salud del cultivo</p>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-purple-400 to-purple-600 rounded-3xl p-8 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
-            <div className="text-center">
-              <div className="text-6xl mb-4">📈</div>
-              <h3 className="text-2xl font-bold mb-2">+12%</h3>
-              <p className="text-purple-100">Sobre el promedio</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer Minimalista */}
-        <div className="bg-white/50 backdrop-blur-sm rounded-3xl p-6 text-center">
-          <div className="flex items-center justify-center gap-8 text-sm text-gray-600">
-            <div>📍 {coordinates.lat}, {coordinates.lng}</div>
-            <div>🌱 {locationData.soilType}</div>
-            <div>🕐 Actualizado hace 5 min</div>
-          </div>
-        </div>
-
       </div>
+
+      {/* Add ChatBot */}
+      <ChatBot />
     </div>
   );
 };
