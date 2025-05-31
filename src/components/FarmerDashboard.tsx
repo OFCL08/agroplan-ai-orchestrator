@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Thermometer, Droplets, Leaf, TrendingUp, Download, CheckCircle, AlertTriangle, Sun, Cloud, Zap } from "lucide-react";
+import { MapPin, Thermometer, Droplets, Leaf, TrendingUp, Download, CheckCircle, AlertTriangle, Sun, Cloud, Zap, Activity } from "lucide-react";
 
 const FarmerDashboard = () => {
   const [coordinates] = useState({ lat: 9.9281, lng: -84.0907 });
@@ -14,6 +13,30 @@ const FarmerDashboard = () => {
     soilType: "Andisol volcánico",
     microclimate: "Subtropical húmedo"
   };
+
+  const alerts = [
+    {
+      type: "warning",
+      message: "Posible sequía en región Norte - Abril 2025",
+      priority: "alta",
+      icon: AlertTriangle,
+      color: "from-orange-400 to-red-500"
+    },
+    {
+      type: "success",
+      message: "Condiciones óptimas para siembra de café detectadas",
+      priority: "media",
+      icon: CheckCircle,
+      color: "from-green-400 to-emerald-500"
+    },
+    {
+      type: "info",
+      message: "Nuevos datos de mercado internacional disponibles",
+      priority: "baja",
+      icon: Activity,
+      color: "from-blue-400 to-cyan-500"
+    }
+  ];
 
   const todayRecommendations = [
     {
@@ -91,6 +114,36 @@ const FarmerDashboard = () => {
                 Descargar Reporte Completo
               </Button>
             </div>
+          </div>
+        </div>
+
+        {/* Alertas del Sistema */}
+        <div className="space-y-6">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">🚨 Alertas del Sistema</h2>
+          <div className="grid gap-6">
+            {alerts.map((alert, idx) => {
+              const IconComponent = alert.icon;
+              return (
+                <div key={idx} className={`relative overflow-hidden rounded-3xl bg-gradient-to-r ${alert.color} p-6 text-white transform hover:scale-[1.02] transition-all duration-300 shadow-2xl`}>
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <IconComponent className="h-16 w-16" />
+                  </div>
+                  <div className="relative z-10">
+                    <div className="flex items-start gap-4">
+                      <div className="bg-white/20 backdrop-blur-sm p-3 rounded-2xl">
+                        <IconComponent className="h-6 w-6" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-lg font-semibold mb-2">{alert.message}</p>
+                        <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full inline-block">
+                          <span className="text-sm font-medium">Prioridad {alert.priority}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 

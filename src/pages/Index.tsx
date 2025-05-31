@@ -106,152 +106,130 @@ const Index = () => {
   ];
 
   const renderOverview = () => (
-    <div className="space-y-6">
-      {/* Header con información de temporada */}
-      <div className="bg-gradient-to-r from-green-600 to-emerald-700 text-white p-6 rounded-lg">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-bold mb-2">{currentSeason.season}</h2>
-            <div className="flex items-center gap-4 text-green-100">
-              <div className="flex items-center gap-1">
-                <MapPin className="h-4 w-4" />
-                <span>{currentSeason.region}</span>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-4">
+      <div className="max-w-6xl mx-auto space-y-8">
+        
+        {/* Header con información de temporada */}
+        <div className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 opacity-90"></div>
+          <div className="absolute inset-0 opacity-20">
+            <div className="w-full h-full bg-white/10 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:20px_20px]"></div>
+          </div>
+          <div className="relative p-8 text-white">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-6">
+                <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
+                  <Activity className="h-12 w-12 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-4xl font-bold mb-2">📊 Vista General del Sistema</h1>
+                  <div className="flex items-center gap-3 text-blue-100">
+                    <MapPin className="h-5 w-5" />
+                    <span className="text-lg">{currentSeason.region}</span>
+                    <span className="text-lg">•</span>
+                    <span className="text-lg">{currentSeason.season}</span>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center gap-1">
-                <Calendar className="h-4 w-4" />
-                <span>Inicio: {currentSeason.startDate}</span>
+              <div className="text-right">
+                <div className="text-3xl font-bold">{currentSeason.estimatedYield}</div>
+                <div className="text-blue-200">Proyección de valor</div>
               </div>
             </div>
-          </div>
-          <div className="text-right">
-            <div className="text-3xl font-bold">{currentSeason.estimatedYield}</div>
-            <div className="text-green-200">Proyección de valor</div>
           </div>
         </div>
-      </div>
 
-      {/* Métricas principales */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">Área Total</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{currentSeason.totalArea}</div>
-            <p className="text-xs text-green-600">+8% vs año anterior</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">Cultivos Activos</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{currentSeason.crops.length}</div>
-            <div className="flex flex-wrap gap-1 mt-2">
-              {currentSeason.crops.map((crop, idx) => (
-                <Badge key={idx} variant="secondary" className="text-xs">{crop}</Badge>
-              ))}
+        {/* Métricas principales con gradientes */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-green-400 to-emerald-500 p-6 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
+            <div className="absolute top-2 right-2 text-3xl opacity-80">🌾</div>
+            <div className="flex flex-col h-full justify-between">
+              <MapPin className="h-8 w-8 mb-3" />
+              <div>
+                <p className="text-3xl font-bold mb-1">{currentSeason.totalArea}</p>
+                <p className="text-green-100 text-sm font-medium">Área Total</p>
+                <p className="text-xs text-green-200">+8% vs año anterior</p>
+              </div>
             </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">Precisión Promedio</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">91.4%</div>
-            <Progress value={91.4} className="mt-2" />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">Agentes Activos</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{agents.filter(a => a.status === 'active').length}/5</div>
-            <div className="flex items-center gap-1 mt-2">
-              <Activity className="h-4 w-4 text-green-500" />
-              <span className="text-xs text-green-600">Todos operativos</span>
+          </div>
+          
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-400 to-cyan-500 p-6 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
+            <div className="absolute top-2 right-2 text-3xl opacity-80">🌱</div>
+            <div className="flex flex-col h-full justify-between">
+              <Sprout className="h-8 w-8 mb-3" />
+              <div>
+                <p className="text-3xl font-bold mb-1">{currentSeason.crops.length}</p>
+                <p className="text-blue-100 text-sm font-medium">Cultivos Activos</p>
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {currentSeason.crops.slice(0, 2).map((crop, idx) => (
+                    <span key={idx} className="bg-white/20 text-xs px-2 py-1 rounded">{crop}</span>
+                  ))}
+                </div>
+              </div>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
 
-      {/* Estados de agentes */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Estado de Agentes IA</CardTitle>
-          <CardDescription>
-            Monitoreo en tiempo real de todos los agentes del sistema
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-400 to-pink-500 p-6 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
+            <div className="absolute top-2 right-2 text-3xl opacity-80">🎯</div>
+            <div className="flex flex-col h-full justify-between">
+              <TrendingUp className="h-8 w-8 mb-3" />
+              <div>
+                <p className="text-3xl font-bold mb-1">91.4%</p>
+                <p className="text-purple-100 text-sm font-medium">Precisión Promedio</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-400 to-red-500 p-6 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
+            <div className="absolute top-2 right-2 text-3xl opacity-80">🤖</div>
+            <div className="flex flex-col h-full justify-between">
+              <Activity className="h-8 w-8 mb-3" />
+              <div>
+                <p className="text-3xl font-bold mb-1">{agents.filter(a => a.status === 'active').length}/5</p>
+                <p className="text-orange-100 text-sm font-medium">Agentes Activos</p>
+                <p className="text-xs text-orange-200">Todos operativos</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Estados de agentes con diseño visual */}
+        <div className="space-y-6">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">🤖 Estado de Agentes IA</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {agents.map((agent) => {
               const IconComponent = agent.icon;
+              const gradientColors = {
+                farmer: "from-green-400 to-emerald-500",
+                climate: "from-cyan-400 to-blue-500", 
+                crop: "from-emerald-400 to-green-500",
+                market: "from-orange-400 to-amber-500",
+                scenario: "from-purple-400 to-purple-500",
+                report: "from-pink-400 to-rose-500"
+              };
               return (
-                <Card key={agent.id} className="cursor-pointer hover:shadow-md transition-shadow"
+                <div key={agent.id} className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${gradientColors[agent.id]} p-6 text-white transform hover:scale-105 transition-all duration-300 shadow-xl cursor-pointer`}
                       onClick={() => setActiveAgent(agent.id)}>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <IconComponent className="h-5 w-5 text-blue-600" />
-                        <span className="font-medium">{agent.name}</span>
-                      </div>
-                      <Badge 
-                        variant={agent.status === 'active' ? 'default' : 
-                                agent.status === 'processing' ? 'secondary' : 'outline'}
-                      >
-                        {agent.status}
-                      </Badge>
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <IconComponent className="h-16 w-16" />
+                  </div>
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-4">
+                      <IconComponent className="h-8 w-8" />
+                      <span className="font-bold text-lg">{agent.name}</span>
                     </div>
-                    <p className="text-sm text-gray-600 mb-3">{agent.description}</p>
+                    <p className="text-white/90 text-sm mb-4">{agent.description}</p>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">Precisión</span>
-                      <span className="font-semibold">{agent.accuracy}%</span>
+                      <span className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">{agent.status}</span>
+                      <span className="font-bold text-lg">{agent.accuracy}%</span>
                     </div>
-                    <Progress value={agent.accuracy} className="mt-1" />
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               );
             })}
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Alertas y notificaciones */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Alertas del Sistema</CardTitle>
-          <CardDescription>
-            Notificaciones importantes basadas en análisis de IA
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {alerts.map((alert, idx) => (
-              <div key={idx} className="flex items-start gap-3 p-3 rounded-lg border">
-                {alert.type === 'warning' && <AlertTriangle className="h-5 w-5 text-orange-500 mt-0.5" />}
-                {alert.type === 'success' && <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />}
-                {alert.type === 'info' && <Activity className="h-5 w-5 text-blue-500 mt-0.5" />}
-                <div className="flex-1">
-                  <p className="text-sm">{alert.message}</p>
-                  <Badge 
-                    variant={alert.priority === 'alta' ? 'destructive' : 
-                            alert.priority === 'media' ? 'secondary' : 'outline'}
-                    className="mt-1"
-                  >
-                    Prioridad {alert.priority}
-                  </Badge>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 
@@ -348,23 +326,113 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="climate">
-            <ClimateAgent />
+            <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-indigo-50 p-4">
+              <div className="max-w-6xl mx-auto">
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-cyan-500 to-blue-600 p-8 text-white mb-8">
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <Cloud className="h-24 w-24" />
+                  </div>
+                  <div className="relative z-10 flex items-center gap-6">
+                    <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
+                      <Cloud className="h-12 w-12" />
+                    </div>
+                    <div>
+                      <h1 className="text-4xl font-bold mb-2">🌤️ Climate Forecaster</h1>
+                      <p className="text-cyan-100 text-lg">Análisis climático avanzado con IA</p>
+                    </div>
+                  </div>
+                </div>
+                <ClimateAgent />
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="crop">
-            <CropAgent />
+            <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-lime-50 p-4">
+              <div className="max-w-6xl mx-auto">
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-500 to-green-600 p-8 text-white mb-8">
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <Sprout className="h-24 w-24" />
+                  </div>
+                  <div className="relative z-10 flex items-center gap-6">
+                    <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
+                      <Sprout className="h-12 w-12" />
+                    </div>
+                    <div>
+                      <h1 className="text-4xl font-bold mb-2">🌱 Crop Modeling</h1>
+                      <p className="text-emerald-100 text-lg">Simulación de rendimientos por cultivo</p>
+                    </div>
+                  </div>
+                </div>
+                <CropAgent />
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="market">
-            <MarketAgent />
+            <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 p-4">
+              <div className="max-w-6xl mx-auto">
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-orange-500 to-amber-600 p-8 text-white mb-8">
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <TrendingUp className="h-24 w-24" />
+                  </div>
+                  <div className="relative z-10 flex items-center gap-6">
+                    <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
+                      <TrendingUp className="h-12 w-12" />
+                    </div>
+                    <div>
+                      <h1 className="text-4xl font-bold mb-2">📈 Market Predictor</h1>
+                      <p className="text-orange-100 text-lg">Proyecciones de precios y demanda</p>
+                    </div>
+                  </div>
+                </div>
+                <MarketAgent />
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="scenario">
-            <ScenarioPlanner />
+            <div className="min-h-screen bg-gradient-to-br from-purple-50 via-violet-50 to-indigo-50 p-4">
+              <div className="max-w-6xl mx-auto">
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-500 to-violet-600 p-8 text-white mb-8">
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <Settings className="h-24 w-24" />
+                  </div>
+                  <div className="relative z-10 flex items-center gap-6">
+                    <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
+                      <Settings className="h-12 w-12" />
+                    </div>
+                    <div>
+                      <h1 className="text-4xl font-bold mb-2">⚙️ Scenario Planner</h1>
+                      <p className="text-purple-100 text-lg">Planificación estratégica integrada</p>
+                    </div>
+                  </div>
+                </div>
+                <ScenarioPlanner />
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="report">
-            <ReportGenerator />
+            <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-red-50 p-4">
+              <div className="max-w-6xl mx-auto">
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-pink-500 to-rose-600 p-8 text-white mb-8">
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <FileText className="h-24 w-24" />
+                  </div>
+                  <div className="relative z-10 flex items-center gap-6">
+                    <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
+                      <FileText className="h-12 w-12" />
+                    </div>
+                    <div>
+                      <h1 className="text-4xl font-bold mb-2">📄 Report Generator</h1>
+                      <p className="text-pink-100 text-lg">Reportes automáticos multimodales</p>
+                    </div>
+                  </div>
+                </div>
+                <ReportGenerator />
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
