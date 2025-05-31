@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -280,14 +281,62 @@ const Index = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeAgent} onValueChange={setActiveAgent} className="space-y-6">
-          <TabsList className="grid grid-cols-7 w-full">
-            <TabsTrigger value="farmer">Mi Finca</TabsTrigger>
-            <TabsTrigger value="overview">Vista General</TabsTrigger>
-            <TabsTrigger value="climate">Clima</TabsTrigger>
-            <TabsTrigger value="crop">Cultivos</TabsTrigger>
-            <TabsTrigger value="market">Mercado</TabsTrigger>
-            <TabsTrigger value="scenario">Escenarios</TabsTrigger>
-            <TabsTrigger value="report">Reportes</TabsTrigger>
+          <TabsList className="grid grid-cols-7 w-full h-20 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl p-2">
+            <TabsTrigger 
+              value="farmer" 
+              className="flex flex-col items-center gap-2 h-full rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-green-500 data-[state=active]:to-emerald-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-50 transition-all duration-300"
+            >
+              <Sprout className="h-6 w-6" />
+              <span className="text-xs font-medium">Mi Finca</span>
+            </TabsTrigger>
+            
+            <TabsTrigger 
+              value="overview" 
+              className="flex flex-col items-center gap-2 h-full rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-blue-50 transition-all duration-300"
+            >
+              <Activity className="h-6 w-6" />
+              <span className="text-xs font-medium">Vista General</span>
+            </TabsTrigger>
+
+            <TabsTrigger 
+              value="climate" 
+              className="flex flex-col items-center gap-2 h-full rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-cyan-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-cyan-50 transition-all duration-300"
+            >
+              <Cloud className="h-6 w-6" />
+              <span className="text-xs font-medium">Clima</span>
+            </TabsTrigger>
+
+            <TabsTrigger 
+              value="crop" 
+              className="flex flex-col items-center gap-2 h-full rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-emerald-500 data-[state=active]:to-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-emerald-50 transition-all duration-300"
+            >
+              <Sprout className="h-6 w-6" />
+              <span className="text-xs font-medium">Cultivos</span>
+            </TabsTrigger>
+
+            <TabsTrigger 
+              value="market" 
+              className="flex flex-col items-center gap-2 h-full rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-orange-500 data-[state=active]:to-amber-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-orange-50 transition-all duration-300"
+            >
+              <TrendingUp className="h-6 w-6" />
+              <span className="text-xs font-medium">Mercado</span>
+            </TabsTrigger>
+
+            <TabsTrigger 
+              value="scenario" 
+              className="flex flex-col items-center gap-2 h-full rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-purple-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-purple-50 transition-all duration-300"
+            >
+              <Settings className="h-6 w-6" />
+              <span className="text-xs font-medium">Escenarios</span>
+            </TabsTrigger>
+
+            <TabsTrigger 
+              value="report" 
+              className="flex flex-col items-center gap-2 h-full rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-pink-500 data-[state=active]:to-rose-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50 transition-all duration-300"
+            >
+              <FileText className="h-6 w-6" />
+              <span className="text-xs font-medium">Reportes</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="farmer">
