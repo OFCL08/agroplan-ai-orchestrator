@@ -1,154 +1,84 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { TrendingUp, TrendingDown, DollarSign, Globe, Truck, BarChart3 } from "lucide-react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, PieChart, Pie, Cell } from "recharts";
+import { TrendingUp, DollarSign, BarChart3, Globe, AlertTriangle, TrendingDown } from "lucide-react";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from "recharts";
 
 const MarketAgent = () => {
-  const [selectedMarket, setSelectedMarket] = useState("international");
-  const [timeHorizon, setTimeHorizon] = useState("12months");
+  const [selectedMarket, setSelectedMarket] = useState("cafe");
+  const [timeHorizon, setTimeHorizon] = useState("6months");
 
-  const priceData = [
-    { month: 'Ene', cafe: 4.2, arroz: 0.8, frijoles: 1.2, maiz: 0.6 },
-    { month: 'Feb', cafe: 4.4, arroz: 0.9, frijoles: 1.3, maiz: 0.7 },
-    { month: 'Mar', cafe: 4.8, arroz: 0.85, frijoles: 1.25, maiz: 0.65 },
-    { month: 'Abr', cafe: 5.1, arroz: 0.82, frijoles: 1.4, maiz: 0.68 },
-    { month: 'May', cafe: 5.3, arroz: 0.78, frijoles: 1.5, maiz: 0.7 },
-    { month: 'Jun', cafe: 5.0, arroz: 0.8, frijoles: 1.45, maiz: 0.72 },
-    { month: 'Jul', cafe: 4.9, arroz: 0.85, frijoles: 1.3, maiz: 0.68 },
-    { month: 'Ago', cafe: 5.2, arroz: 0.9, frijoles: 1.35, maiz: 0.75 },
-    { month: 'Sep', cafe: 5.4, arroz: 0.95, frijoles: 1.4, maiz: 0.78 },
-    { month: 'Oct', cafe: 5.6, arroz: 1.0, frijoles: 1.5, maiz: 0.8 },
-    { month: 'Nov', cafe: 5.8, arroz: 1.05, frijoles: 1.6, maiz: 0.82 },
-    { month: 'Dic', cafe: 6.0, arroz: 1.1, frijoles: 1.7, maiz: 0.85 }
+  const marketData = [
+    { month: 'Ene', cafe: 2.45, arroz: 0.65, frijoles: 1.8, maiz: 0.45 },
+    { month: 'Feb', cafe: 2.52, arroz: 0.68, frijoles: 1.85, maiz: 0.47 },
+    { month: 'Mar', cafe: 2.48, arroz: 0.72, frijoles: 1.92, maiz: 0.51 },
+    { month: 'Abr', cafe: 2.61, arroz: 0.75, frijoles: 1.97, maiz: 0.53 },
+    { month: 'May', cafe: 2.73, arroz: 0.78, frijoles: 2.05, maiz: 0.56 },
+    { month: 'Jun', cafe: 2.85, arroz: 0.82, frijoles: 2.12, maiz: 0.58 }
   ];
 
-  const marketShare = [
-    { name: 'Estados Unidos', value: 35, color: '#3b82f6' },
-    { name: 'Europa', value: 28, color: '#10b981' },
-    { name: 'Asia', value: 22, color: '#f59e0b' },
-    { name: 'América Latina', value: 10, color: '#ef4444' },
-    { name: 'Otros', value: 5, color: '#8b5cf6' }
-  ];
-
-  const supplyChainData = [
-    { stage: 'Producción', current: 100, optimized: 100, cost: 45 },
-    { stage: 'Procesamiento', current: 95, optimized: 98, cost: 15 },
-    { stage: 'Almacenamiento', current: 92, optimized: 96, cost: 8 },
-    { stage: 'Transporte', current: 88, optimized: 94, cost: 18 },
-    { stage: 'Distribución', current: 85, optimized: 92, cost: 14 }
+  const demandProjections = [
+    { region: 'América del Norte', demand: 35, growth: 2.3 },
+    { region: 'Europa', demand: 28, growth: 1.8 },
+    { region: 'Asia', demand: 25, growth: 4.2 },
+    { region: 'América Latina', demand: 12, growth: 3.1 }
   ];
 
   const marketMetrics = [
+    { label: "Precio Promedio", value: "$2.67/kg", change: "+8.3%", icon: DollarSign },
+    { label: "Volumen Export.", value: "2.8M tons", change: "+12%", icon: TrendingUp },
+    { label: "Demanda Global", value: "15.2M tons", change: "+5.7%", icon: Globe },
+    { label: "Volatilidad", value: "14.2%", change: "-2.1%", icon: BarChart3 }
+  ];
+
+  const riskFactors = [
     {
-      title: "Precio Promedio",
-      value: "$5.20/kg",
-      change: "+12.5%",
-      trend: "up",
-      icon: DollarSign
+      factor: "Clima Extremo",
+      probability: 0.32,
+      impact: "Alto",
+      description: "Sequías o lluvias excesivas pueden afectar el 23% de la producción regional"
     },
     {
-      title: "Demanda Global",
-      value: "2.8M ton",
-      change: "+8.3%",
-      trend: "up",
-      icon: Globe
+      factor: "Volatilidad Precios",
+      probability: 0.28,
+      impact: "Medio",
+      description: "Fluctuaciones del mercado internacional pueden generar variaciones del 15%"
     },
     {
-      title: "Inventarios",
-      value: "180k ton",
-      change: "-15.2%",
-      trend: "down",
-      icon: Truck
-    },
-    {
-      title: "Volatilidad",
-      value: "18.5%",
-      change: "+2.1%",
-      trend: "up",
-      icon: BarChart3
+      factor: "Competencia Regional",
+      probability: 0.41,
+      impact: "Medio",
+      description: "Nuevos productores en la región pueden reducir márgenes en 8-12%"
     }
   ];
 
-  const scenarios = {
-    optimistic: {
-      name: "Escenario Optimista",
-      priceChange: "+25%",
-      demandGrowth: "+15%",
-      description: "Crecimiento sostenido de la demanda global"
-    },
-    realistic: {
-      name: "Escenario Base",
-      priceChange: "+12%",
-      demandGrowth: "+8%",
-      description: "Tendencias actuales del mercado"
-    },
-    pessimistic: {
-      name: "Escenario Pesimista",
-      priceChange: "-5%",
-      demandGrowth: "+2%",
-      description: "Posible recesión económica global"
-    }
+  const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'];
+
+  const capitalizeFirst = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="bg-gradient-to-r from-blue-600 to-purple-700 text-white">
+      <Card className="bg-gradient-to-r from-emerald-600 to-teal-700 text-white">
         <CardHeader>
           <div className="flex items-center gap-3">
             <TrendingUp className="h-8 w-8" />
             <div>
               <CardTitle className="text-2xl">Market Predictor Agent</CardTitle>
-              <CardDescription className="text-blue-100">
-                Análisis predictivo de mercados y cadenas de distribución con IA
+              <CardDescription className="text-emerald-100">
+                Proyecciones de mercado y análisis de precios con IA predictiva
               </CardDescription>
             </div>
           </div>
         </CardHeader>
       </Card>
 
-      {/* Controles */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <label className="text-sm font-medium mb-2 block">Mercado Objetivo</label>
-            <Select value={selectedMarket} onValueChange={setSelectedMarket}>
-              <SelectTrigger>
-                <SelectValue placeholder="Seleccionar mercado" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="international">Mercado Internacional</SelectItem>
-                <SelectItem value="domestic">Mercado Doméstico</SelectItem>
-                <SelectItem value="regional">Mercado Regional</SelectItem>
-              </SelectContent>
-            </Select>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <label className="text-sm font-medium mb-2 block">Horizonte Temporal</label>
-            <Select value={timeHorizon} onValueChange={setTimeHorizon}>
-              <SelectTrigger>
-                <SelectValue placeholder="Seleccionar período" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="3months">3 Meses</SelectItem>
-                <SelectItem value="6months">6 Meses</SelectItem>
-                <SelectItem value="12months">12 Meses</SelectItem>
-                <SelectItem value="24months">24 Meses</SelectItem>
-              </SelectContent>
-            </Select>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Métricas principales */}
+      {/* Métricas de mercado */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {marketMetrics.map((metric, idx) => {
           const IconComponent = metric.icon;
@@ -156,22 +86,13 @@ const MarketAgent = () => {
             <Card key={idx}>
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <IconComponent className="h-5 w-5 text-blue-600" />
+                  <IconComponent className="h-5 w-5 text-emerald-600" />
                   <div className="flex-1">
-                    <p className="text-sm text-gray-600">{metric.title}</p>
+                    <p className="text-sm text-gray-600">{metric.label}</p>
                     <p className="text-xl font-bold">{metric.value}</p>
-                    <div className="flex items-center gap-1 mt-1">
-                      {metric.trend === 'up' ? (
-                        <TrendingUp className="h-3 w-3 text-green-500" />
-                      ) : (
-                        <TrendingDown className="h-3 w-3 text-red-500" />
-                      )}
-                      <span className={`text-xs ${
-                        metric.trend === 'up' ? 'text-green-600' : 'text-red-600'
-                      }`}>
-                        {metric.change}
-                      </span>
-                    </div>
+                    <p className={`text-xs ${metric.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
+                      {metric.change} vs año anterior
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -180,12 +101,12 @@ const MarketAgent = () => {
         })}
       </div>
 
-      {/* Tabs principales */}
+      {/* Simulador de mercado */}
       <Tabs defaultValue="prices" className="space-y-4">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="prices">Precios</TabsTrigger>
           <TabsTrigger value="demand">Demanda</TabsTrigger>
-          <TabsTrigger value="supply">Cadena de Suministro</TabsTrigger>
+          <TabsTrigger value="risks">Riesgos</TabsTrigger>
           <TabsTrigger value="scenarios">Escenarios</TabsTrigger>
         </TabsList>
 
@@ -194,98 +115,115 @@ const MarketAgent = () => {
             <CardHeader>
               <CardTitle>Proyecciones de Precios</CardTitle>
               <CardDescription>
-                Análisis predictivo de precios por cultivo basado en IA
+                Análisis predictivo de precios por cultivo y región
               </CardDescription>
             </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Cultivo Objetivo</label>
+                  <Select value={selectedMarket} onValueChange={setSelectedMarket}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seleccionar cultivo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="cafe">Café</SelectItem>
+                      <SelectItem value="arroz">Arroz</SelectItem>
+                      <SelectItem value="frijoles">Frijoles</SelectItem>
+                      <SelectItem value="maiz">Maíz</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Horizonte Temporal</label>
+                  <Select value={timeHorizon} onValueChange={setTimeHorizon}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seleccionar periodo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="3months">3 meses</SelectItem>
+                      <SelectItem value="6months">6 meses</SelectItem>
+                      <SelectItem value="12months">12 meses</SelectItem>
+                      <SelectItem value="24months">24 meses</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <h4 className="font-medium mb-2">
+                  Análisis de {capitalizeFirst(selectedMarket)} - {timeHorizon}
+                </h4>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="text-gray-600">Precio actual:</span>
+                    <span className="ml-1 font-medium">$2.67/kg</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Proyección:</span>
+                    <span className="ml-1 font-medium text-green-600">$2.95/kg (+10.5%)</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Confianza:</span>
+                    <span className="ml-1 font-medium">87%</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Volatilidad:</span>
+                    <span className="ml-1 font-medium">±8.2%</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Tendencias de Precios</CardTitle>
+              <CardDescription>Evolución histórica y proyecciones</CardDescription>
+            </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart data={priceData}>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={marketData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="month" />
                   <YAxis />
-                  <Tooltip 
-                    formatter={(value, name) => [`$${value}/kg`, name.charAt(0).toUpperCase() + name.slice(1)]}
+                  <Tooltip />
+                  <Line 
+                    type="monotone" 
+                    dataKey={selectedMarket} 
+                    stroke="#10b981" 
+                    strokeWidth={3}
+                    dot={{ fill: '#10b981', strokeWidth: 2, r: 4 }}
                   />
-                  <Line type="monotone" dataKey="cafe" stroke="#8b5cf6" strokeWidth={3} name="café" />
-                  <Line type="monotone" dataKey="arroz" stroke="#3b82f6" strokeWidth={3} name="arroz" />
-                  <Line type="monotone" dataKey="frijoles" stroke="#10b981" strokeWidth={3} name="frijoles" />
-                  <Line type="monotone" dataKey="maiz" stroke="#f59e0b" strokeWidth={3} name="maíz" />
                 </LineChart>
               </ResponsiveContainer>
             </CardContent>
           </Card>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Factores de Precio</CardTitle>
-                <CardDescription>Principales impulsores del mercado</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="p-3 bg-green-50 border-l-4 border-green-500 rounded-r">
-                  <h4 className="font-medium text-green-800">Demanda Creciente</h4>
-                  <p className="text-sm text-green-700">+15% en mercados asiáticos</p>
-                </div>
-                <div className="p-3 bg-orange-50 border-l-4 border-orange-500 rounded-r">
-                  <h4 className="font-medium text-orange-800">Clima Adverso</h4>
-                  <p className="text-sm text-orange-700">Sequías en Brasil afectan oferta</p>
-                </div>
-                <div className="p-3 bg-blue-50 border-l-4 border-blue-500 rounded-r">
-                  <h4 className="font-medium text-blue-800">Logística</h4>
-                  <p className="text-sm text-blue-700">Costos de transporte +8%</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Alertas de Mercado</CardTitle>
-                <CardDescription>Notificaciones generadas por IA</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-start gap-3 p-3 bg-red-50 rounded-lg">
-                  <TrendingUp className="h-5 w-5 text-red-600 mt-0.5" />
-                  <div>
-                    <h4 className="font-medium text-red-800">Volatilidad Alta</h4>
-                    <p className="text-sm text-red-700">Precios del café +25% en 30 días</p>
-                    <Badge variant="destructive" className="mt-1">Urgente</Badge>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 bg-yellow-50 rounded-lg">
-                  <DollarSign className="h-5 w-5 text-yellow-600 mt-0.5" />
-                  <div>
-                    <h4 className="font-medium text-yellow-800">Oportunidad de Venta</h4>
-                    <p className="text-sm text-yellow-700">Ventana óptima: próximos 14 días</p>
-                    <Badge variant="secondary" className="mt-1">Moderado</Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
         </TabsContent>
 
         <TabsContent value="demand" className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Distribución de Demanda Global</CardTitle>
-                <CardDescription>Participación por región en el mercado</CardDescription>
+                <CardTitle>Demanda por Región</CardTitle>
+                <CardDescription>Distribución global de demanda proyectada</CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
                     <Pie
-                      data={marketShare}
+                      data={demandProjections}
                       cx="50%"
                       cy="50%"
                       labelLine={false}
-                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      label={({ region, demand }) => `${region}: ${demand}%`}
                       outerRadius={80}
                       fill="#8884d8"
-                      dataKey="value"
+                      dataKey="demand"
                     >
-                      {marketShare.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      {demandProjections.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
                     <Tooltip />
@@ -296,240 +234,220 @@ const MarketAgent = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Tendencias de Demanda</CardTitle>
-                <CardDescription>Proyección de crecimiento por región</CardDescription>
+                <CardTitle>Crecimiento Proyectado</CardTitle>
+                <CardDescription>Tasa de crecimiento anual por región</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {marketShare.map((region, idx) => (
-                    <div key={idx} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div 
-                          className="w-4 h-4 rounded"
-                          style={{ backgroundColor: region.color }}
-                        />
-                        <span className="font-medium">{region.name}</span>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-semibold">{region.value}%</div>
-                        <div className="text-sm text-green-600">
-                          +{Math.floor(Math.random() * 10 + 3)}% anual
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={demandProjections}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="region" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="growth" fill="#10b981" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
               </CardContent>
             </Card>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle>Análisis de Demanda Sintética</CardTitle>
+              <CardTitle>Oportunidades de Mercado</CardTitle>
               <CardDescription>
-                Simulaciones de diferentes escenarios de mercado generados por IA
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={350}>
-                <AreaChart data={priceData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Area
-                    type="monotone"
-                    dataKey="cafe"
-                    stackId="1"
-                    stroke="#8b5cf6"
-                    fill="#8b5cf6"
-                    fillOpacity={0.6}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="arroz"
-                    stackId="1"
-                    stroke="#3b82f6"
-                    fill="#3b82f6"
-                    fillOpacity={0.6}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="supply" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Optimización de Cadena de Suministro</CardTitle>
-              <CardDescription>
-                Análisis de eficiencia y costos en cada etapa del proceso
+                Análisis de nichos y segmentos emergentes
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {supplyChainData.map((stage, idx) => (
+                <div className="p-4 border-l-4 border-green-500 bg-green-50 rounded-r-lg">
+                  <h4 className="font-medium text-green-800">Mercado Orgánico</h4>
+                  <p className="text-sm text-green-700">
+                    Crecimiento del 23% anual. Premium de precio del 40-60% sobre productos convencionales.
+                  </p>
+                  <Badge variant="default" className="mt-2">Oportunidad Alta</Badge>
+                </div>
+
+                <div className="p-4 border-l-4 border-blue-500 bg-blue-50 rounded-r-lg">
+                  <h4 className="font-medium text-blue-800">Exportación Directa</h4>
+                  <p className="text-sm text-blue-700">
+                    Eliminación de intermediarios puede aumentar márgenes en 25-35%.
+                  </p>
+                  <Badge variant="secondary" className="mt-2">Oportunidad Media</Badge>
+                </div>
+
+                <div className="p-4 border-l-4 border-orange-500 bg-orange-50 rounded-r-lg">
+                  <h4 className="font-medium text-orange-800">Procesamiento Local</h4>
+                  <p className="text-sm text-orange-700">
+                    Valor agregado puede incrementar ingresos en 45-70% pero requiere inversión inicial.
+                  </p>
+                  <Badge variant="outline" className="mt-2">Evaluación Requerida</Badge>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="risks" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Análisis de Riesgos de Mercado</CardTitle>
+              <CardDescription>
+                Identificación y evaluación de factores de riesgo
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {riskFactors.map((risk, idx) => (
                   <div key={idx} className="p-4 border rounded-lg">
                     <div className="flex items-center justify-between mb-3">
-                      <h4 className="font-medium">{stage.stage}</h4>
-                      <Badge variant="outline">{stage.cost}% del costo total</Badge>
+                      <h4 className="font-medium flex items-center gap-2">
+                        <AlertTriangle className="h-4 w-4 text-orange-500" />
+                        {risk.factor}
+                      </h4>
+                      <Badge 
+                        variant={risk.impact === 'Alto' ? 'destructive' : 'secondary'}
+                      >
+                        Impacto {risk.impact}
+                      </Badge>
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-sm text-gray-600 mb-1">Eficiencia Actual</p>
-                        <div className="flex items-center gap-2">
-                          <div className="flex-1 bg-gray-200 rounded-full h-2">
-                            <div 
-                              className="bg-orange-500 h-2 rounded-full"
-                              style={{ width: `${stage.current}%` }}
-                            />
-                          </div>
-                          <span className="text-sm font-medium">{stage.current}%</span>
-                        </div>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600 mb-1">IA Optimizada</p>
-                        <div className="flex items-center gap-2">
-                          <div className="flex-1 bg-gray-200 rounded-full h-2">
-                            <div 
-                              className="bg-green-500 h-2 rounded-full"
-                              style={{ width: `${stage.optimized}%` }}
-                            />
-                          </div>
-                          <span className="text-sm font-medium">{stage.optimized}%</span>
-                        </div>
+                    <p className="text-sm text-gray-600 mb-3">{risk.description}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-500">
+                        Probabilidad: {(risk.probability * 100).toFixed(0)}%
+                      </span>
+                      <div className="w-32 bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="bg-orange-500 h-2 rounded-full" 
+                          style={{ width: `${risk.probability * 100}%` }}
+                        />
                       </div>
                     </div>
-                    <p className="text-xs text-green-600 mt-2">
-                      Mejora potencial: +{stage.optimized - stage.current}%
-                    </p>
                   </div>
                 ))}
               </div>
             </CardContent>
           </Card>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Distribución Alternativa</CardTitle>
-                <CardDescription>Rutas optimizadas por IA</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full mb-4">
-                  <Truck className="h-4 w-4 mr-2" />
-                  Generar Rutas IA
-                </Button>
-                <div className="space-y-3">
-                  <div className="p-3 bg-blue-50 border rounded">
-                    <h4 className="font-medium">Ruta Actual</h4>
-                    <p className="text-sm text-gray-600">Costo: $2.5M | Tiempo: 15 días</p>
-                  </div>
-                  <div className="p-3 bg-green-50 border rounded">
-                    <h4 className="font-medium">Ruta Optimizada IA</h4>
-                    <p className="text-sm text-gray-600">Costo: $2.1M | Tiempo: 12 días</p>
-                    <Badge variant="default" className="mt-1">-16% costo</Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Inventario Inteligente</CardTitle>
-                <CardDescription>Gestión predictiva de stock</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 border rounded">
-                    <span>Stock Actual</span>
-                    <span className="font-semibold">180k ton</span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 border rounded">
-                    <span>Demanda Proyectada</span>
-                    <span className="font-semibold">220k ton</span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-orange-50 border border-orange-200 rounded">
-                    <span>Déficit Estimado</span>
-                    <span className="font-semibold text-orange-600">-40k ton</span>
-                  </div>
-                  <Button variant="outline" className="w-full">
-                    Ajustar Plan de Producción
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="scenarios" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {Object.entries(scenarios).map(([key, scenario]) => (
-              <Card key={key} className={key === 'realistic' ? 'ring-2 ring-blue-500' : ''}>
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    {scenario.name}
-                    {key === 'realistic' && <Badge>Base</Badge>}
-                  </CardTitle>
-                  <CardDescription>{scenario.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Cambio en Precios:</span>
-                    <span className={`font-semibold ${
-                      scenario.priceChange.startsWith('+') ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                      {scenario.priceChange}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Crecimiento Demanda:</span>
-                    <span className="font-semibold text-blue-600">{scenario.demandGrowth}</span>
-                  </div>
-                  <Button variant="outline" className="w-full mt-4">
-                    Simular Escenario
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
           <Card>
             <CardHeader>
-              <CardTitle>Generador de Escenarios Sintéticos</CardTitle>
+              <CardTitle>Estrategias de Mitigación</CardTitle>
               <CardDescription>
-                Crea nuevos escenarios de mercado usando modelos generativos de IA
+                Recomendaciones para reducir exposición al riesgo
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <Button size="lg" className="w-full">
-                    <BarChart3 className="h-4 w-4 mr-2" />
-                    Generar Escenario IA
-                  </Button>
-                  <div className="p-4 bg-gray-50 rounded-lg">
-                    <h4 className="font-medium mb-2">Parámetros de Generación:</h4>
-                    <ul className="text-sm text-gray-600 space-y-1">
-                      <li>• Volatilidad: Media-Alta</li>
-                      <li>• Horizonte: 18 meses</li>
-                      <li>• Factores externos: Activados</li>
-                      <li>• Confianza: 89%</li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="p-6 border-2 border-dashed border-gray-300 rounded-lg text-center">
-                  <TrendingUp className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-                  <h4 className="font-medium text-gray-700 mb-2">Escenario Generado</h4>
-                  <p className="text-sm text-gray-600">
-                    Los resultados del escenario sintético aparecerán aquí
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <h4 className="font-medium text-blue-800 mb-2">Diversificación</h4>
+                  <p className="text-sm text-blue-700">
+                    Distribuir cultivos en múltiples variedades y ciclos de cosecha.
                   </p>
-                  <p className="text-xs text-gray-500 mt-2">
-                    Tiempo de generación: ~30 segundos
+                </div>
+                
+                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <h4 className="font-medium text-green-800 mb-2">Contratos Forward</h4>
+                  <p className="text-sm text-green-700">
+                    Asegurar precios mediante contratos a futuro con compradores.
+                  </p>
+                </div>
+                
+                <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                  <h4 className="font-medium text-purple-800 mb-2">Seguros Agrícolas</h4>
+                  <p className="text-sm text-purple-700">
+                    Protección contra pérdidas por eventos climáticos extremos.
+                  </p>
+                </div>
+                
+                <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                  <h4 className="font-medium text-orange-800 mb-2">Monitoreo Continuo</h4>
+                  <p className="text-sm text-orange-700">
+                    Seguimiento en tiempo real de indicadores de mercado.
                   </p>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="scenarios" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Simulación de Escenarios</CardTitle>
+              <CardDescription>
+                Análisis de diferentes condiciones de mercado futuras
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="p-4 border-2 border-green-200 bg-green-50 rounded-lg">
+                  <div className="flex items-center gap-2 mb-3">
+                    <TrendingUp className="h-5 w-5 text-green-600" />
+                    <h4 className="font-medium text-green-800">Escenario Optimista</h4>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Precio:</span>
+                      <span className="font-medium text-green-700">+15-25%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Demanda:</span>
+                      <span className="font-medium text-green-700">+12%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Probabilidad:</span>
+                      <span className="font-medium">32%</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 border-2 border-yellow-200 bg-yellow-50 rounded-lg">
+                  <div className="flex items-center gap-2 mb-3">
+                    <BarChart3 className="h-5 w-5 text-yellow-600" />
+                    <h4 className="font-medium text-yellow-800">Escenario Base</h4>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Precio:</span>
+                      <span className="font-medium text-yellow-700">+5-10%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Demanda:</span>
+                      <span className="font-medium text-yellow-700">+6%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Probabilidad:</span>
+                      <span className="font-medium">45%</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 border-2 border-red-200 bg-red-50 rounded-lg">
+                  <div className="flex items-center gap-2 mb-3">
+                    <TrendingDown className="h-5 w-5 text-red-600" />
+                    <h4 className="font-medium text-red-800">Escenario Pesimista</h4>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Precio:</span>
+                      <span className="font-medium text-red-700">-10-5%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Demanda:</span>
+                      <span className="font-medium text-red-700">-3%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Probabilidad:</span>
+                      <span className="font-medium">23%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <Button size="lg" className="w-full">
+                <BarChart3 className="h-4 w-4 mr-2" />
+                Ejecutar Simulación Monte Carlo
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>

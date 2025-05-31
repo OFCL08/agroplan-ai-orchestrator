@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -22,11 +21,20 @@ import CropAgent from "@/components/CropAgent";
 import MarketAgent from "@/components/MarketAgent";
 import ScenarioPlanner from "@/components/ScenarioPlanner";
 import ReportGenerator from "@/components/ReportGenerator";
+import FarmerDashboard from "@/components/FarmerDashboard";
 
 const Index = () => {
-  const [activeAgent, setActiveAgent] = useState("overview");
+  const [activeAgent, setActiveAgent] = useState("farmer");
 
   const agents = [
+    {
+      id: "farmer",
+      name: "Mi Finca",
+      icon: Sprout,
+      status: "active",
+      accuracy: 96,
+      description: "Dashboard personalizado para agricultores"
+    },
     {
       id: "climate",
       name: "Climate Forecaster",
@@ -272,7 +280,8 @@ const Index = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeAgent} onValueChange={setActiveAgent} className="space-y-6">
-          <TabsList className="grid grid-cols-6 w-full">
+          <TabsList className="grid grid-cols-7 w-full">
+            <TabsTrigger value="farmer">Mi Finca</TabsTrigger>
             <TabsTrigger value="overview">Vista General</TabsTrigger>
             <TabsTrigger value="climate">Clima</TabsTrigger>
             <TabsTrigger value="crop">Cultivos</TabsTrigger>
@@ -280,6 +289,10 @@ const Index = () => {
             <TabsTrigger value="scenario">Escenarios</TabsTrigger>
             <TabsTrigger value="report">Reportes</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="farmer">
+            <FarmerDashboard />
+          </TabsContent>
 
           <TabsContent value="overview">
             {renderOverview()}
