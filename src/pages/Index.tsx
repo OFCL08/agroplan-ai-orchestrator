@@ -34,8 +34,7 @@ const Index = () => {
       icon: Sprout,
       status: "active",
       accuracy: 96,
-      description: "Dashboard personalizado para agricultores",
-      color: "verde-hoja"
+      description: "Dashboard personalizado para agricultores"
     },
     {
       id: "climate",
@@ -43,8 +42,7 @@ const Index = () => {
       icon: Cloud,
       status: "active",
       accuracy: 94,
-      description: "Análisis climático avanzado con IA",
-      color: "azul-cielo"
+      description: "Análisis climático avanzado con IA"
     },
     {
       id: "crop",
@@ -52,8 +50,7 @@ const Index = () => {
       icon: Sprout,
       status: "active",
       accuracy: 87,
-      description: "Simulación de rendimientos por cultivo",
-      color: "verde-oliva"
+      description: "Simulación de rendimientos por cultivo"
     },
     {
       id: "market",
@@ -61,8 +58,7 @@ const Index = () => {
       icon: TrendingUp,
       status: "processing",
       accuracy: 91,
-      description: "Proyecciones de precios y demanda",
-      color: "tierra-calida"
+      description: "Proyecciones de precios y demanda"
     },
     {
       id: "scenario",
@@ -70,8 +66,7 @@ const Index = () => {
       icon: Settings,
       status: "active",
       accuracy: 89,
-      description: "Planificación estratégica integrada",
-      color: "amarillo-maiz"
+      description: "Planificación estratégica integrada"
     },
     {
       id: "report",
@@ -79,8 +74,7 @@ const Index = () => {
       icon: FileText,
       status: "ready",
       accuracy: 96,
-      description: "Reportes automáticos multimodales",
-      color: "verde-hoja"
+      description: "Reportes automáticos multimodales"
     }
   ];
 
@@ -94,87 +88,123 @@ const Index = () => {
   };
 
   const renderOverview = () => (
-    <div className="min-h-screen bg-blanco-natural p-6">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-blanco-natural via-azul-cielo/20 to-verde-oliva/20 p-4">
+      <div className="max-w-6xl mx-auto space-y-8">
         
-        {/* Header con color sólido */}
-        <div className="bg-verde-hoja rounded-2xl p-8 text-white">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <div className="bg-white p-4 rounded-xl">
-                <Activity className="h-12 w-12 text-verde-hoja" />
+        {/* Header con nueva paleta */}
+        <div className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-verde-hoja via-tierra-calida to-verde-oliva opacity-90"></div>
+          <div className="absolute inset-0 opacity-20">
+            <div className="w-full h-full bg-white/10 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:20px_20px]"></div>
+          </div>
+          <div className="relative p-8 text-white">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-6">
+                <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
+                  <Activity className="h-12 w-12 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-4xl font-bold mb-2">📊 Vista General del Sistema</h1>
+                  <div className="flex items-center gap-3 text-white/80">
+                    <MapPin className="h-5 w-5" />
+                    <span className="text-lg">{currentSeason.region}</span>
+                    <span className="text-lg">•</span>
+                    <span className="text-lg">{currentSeason.season}</span>
+                  </div>
+                </div>
               </div>
+              <div className="text-right">
+                <div className="text-3xl font-bold">{currentSeason.estimatedYield}</div>
+                <div className="text-white/80">Proyección de valor</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Métricas principales con nueva paleta */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-verde-hoja to-verde-oliva p-6 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
+            <div className="absolute top-2 right-2 text-3xl opacity-80">🌾</div>
+            <div className="flex flex-col h-full justify-between">
+              <MapPin className="h-8 w-8 mb-3" />
               <div>
-                <h1 className="text-4xl font-bold mb-2">📊 Vista General del Sistema</h1>
-                <div className="flex items-center gap-3">
-                  <MapPin className="h-5 w-5" />
-                  <span className="text-lg">{currentSeason.region}</span>
-                  <span className="text-lg">•</span>
-                  <span className="text-lg">{currentSeason.season}</span>
+                <p className="text-3xl font-bold mb-1">{currentSeason.totalArea}</p>
+                <p className="text-white/80 text-sm font-medium">Área Total</p>
+                <p className="text-xs text-white/60">+8% vs año anterior</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-azul-cielo to-blue-500 p-6 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
+            <div className="absolute top-2 right-2 text-3xl opacity-80">🌱</div>
+            <div className="flex flex-col h-full justify-between">
+              <Sprout className="h-8 w-8 mb-3" />
+              <div>
+                <p className="text-3xl font-bold mb-1">{currentSeason.crops.length}</p>
+                <p className="text-white/80 text-sm font-medium">Cultivos Activos</p>
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {currentSeason.crops.slice(0, 2).map((crop, idx) => (
+                    <span key={idx} className="bg-white/20 text-xs px-2 py-1 rounded">{crop}</span>
+                  ))}
                 </div>
               </div>
             </div>
-            <div className="text-right">
-              <div className="text-3xl font-bold">{currentSeason.estimatedYield}</div>
-              <div className="text-white">Proyección de valor</div>
+          </div>
+
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-tierra-calida to-amber-600 p-6 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
+            <div className="absolute top-2 right-2 text-3xl opacity-80">🎯</div>
+            <div className="flex flex-col h-full justify-between">
+              <TrendingUp className="h-8 w-8 mb-3" />
+              <div>
+                <p className="text-3xl font-bold mb-1">91.4%</p>
+                <p className="text-white/80 text-sm font-medium">Precisión Promedio</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amarillo-maiz to-orange-500 p-6 text-gris-piedra transform hover:scale-105 transition-all duration-300 shadow-xl">
+            <div className="absolute top-2 right-2 text-3xl opacity-80">🤖</div>
+            <div className="flex flex-col h-full justify-between">
+              <Activity className="h-8 w-8 mb-3" />
+              <div>
+                <p className="text-3xl font-bold mb-1">{agents.filter(a => a.status === 'active').length}/5</p>
+                <p className="text-gris-piedra/80 text-sm font-medium">Agentes Activos</p>
+                <p className="text-xs text-gris-piedra/60">Todos operativos</p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Métricas principales con colores sólidos */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-verde-hoja rounded-2xl p-6 text-white transform hover:scale-105 transition-all duration-300">
-            <MapPin className="h-8 w-8 mb-4" />
-            <p className="text-3xl font-bold mb-2">{currentSeason.totalArea}</p>
-            <p className="text-sm">Área Total</p>
-            <p className="text-xs opacity-80">+8% vs año anterior</p>
-          </div>
-          
-          <div className="bg-azul-cielo rounded-2xl p-6 text-gris-piedra transform hover:scale-105 transition-all duration-300">
-            <Sprout className="h-8 w-8 mb-4" />
-            <p className="text-3xl font-bold mb-2">{currentSeason.crops.length}</p>
-            <p className="text-sm">Cultivos Activos</p>
-            <div className="flex flex-wrap gap-1 mt-2">
-              {currentSeason.crops.slice(0, 2).map((crop, idx) => (
-                <span key={idx} className="bg-gris-piedra text-white text-xs px-2 py-1 rounded">{crop}</span>
-              ))}
-            </div>
-          </div>
-
-          <div className="bg-tierra-calida rounded-2xl p-6 text-white transform hover:scale-105 transition-all duration-300">
-            <TrendingUp className="h-8 w-8 mb-4" />
-            <p className="text-3xl font-bold mb-2">91.4%</p>
-            <p className="text-sm">Precisión Promedio</p>
-          </div>
-
-          <div className="bg-amarillo-maiz rounded-2xl p-6 text-gris-piedra transform hover:scale-105 transition-all duration-300">
-            <Activity className="h-8 w-8 mb-4" />
-            <p className="text-3xl font-bold mb-2">{agents.filter(a => a.status === 'active').length}/5</p>
-            <p className="text-sm">Agentes Activos</p>
-            <p className="text-xs opacity-80">Todos operativos</p>
-          </div>
-        </div>
-
-        {/* Estados de agentes con colores sólidos */}
+        {/* Estados de agentes con nueva paleta */}
         <div className="space-y-6">
           <h2 className="text-3xl font-bold text-gris-piedra mb-6">🤖 Estado de Agentes IA</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {agents.map((agent) => {
               const IconComponent = agent.icon;
-              const bgColor = `bg-${agent.color}`;
-              const textColor = agent.color === 'azul-cielo' || agent.color === 'amarillo-maiz' ? 'text-gris-piedra' : 'text-white';
-              
+              const gradientColors = {
+                farmer: "from-verde-hoja to-verde-oliva",
+                climate: "from-azul-cielo to-blue-500", 
+                crop: "from-verde-oliva to-verde-hoja",
+                market: "from-tierra-calida to-amber-600",
+                scenario: "from-amarillo-maiz to-orange-500",
+                report: "from-verde-hoja to-tierra-calida"
+              };
               return (
-                <div key={agent.id} className={`${bgColor} rounded-2xl p-6 ${textColor} transform hover:scale-105 transition-all duration-300 cursor-pointer`}
+                <div key={agent.id} className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${gradientColors[agent.id]} p-6 text-white transform hover:scale-105 transition-all duration-300 shadow-xl cursor-pointer`}
                       onClick={() => setActiveAgent(agent.id)}>
-                  <div className="flex items-center gap-3 mb-4">
-                    <IconComponent className="h-8 w-8" />
-                    <span className="font-bold text-lg">{agent.name}</span>
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <IconComponent className="h-16 w-16" />
                   </div>
-                  <p className={`${textColor} opacity-90 text-sm mb-4`}>{agent.description}</p>
-                  <div className="flex items-center justify-between">
-                    <span className={`${textColor === 'text-white' ? 'bg-white text-gris-piedra' : 'bg-gris-piedra text-white'} px-3 py-1 rounded-full text-sm font-medium`}>{agent.status}</span>
-                    <span className="font-bold text-lg">{agent.accuracy}%</span>
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-4">
+                      <IconComponent className="h-8 w-8" />
+                      <span className="font-bold text-lg">{agent.name}</span>
+                    </div>
+                    <p className="text-white/90 text-sm mb-4">{agent.description}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">{agent.status}</span>
+                      <span className="font-bold text-lg">{agent.accuracy}%</span>
+                    </div>
                   </div>
                 </div>
               );
@@ -186,21 +216,21 @@ const Index = () => {
   );
 
   return (
-    <div className="min-h-screen bg-blanco-natural">
-      {/* Header reorganizado con color sólido fuerte */}
-      <div className="bg-gris-piedra shadow-lg">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between h-20">
-            <div className="flex items-center gap-4">
-              <div className="bg-verde-hoja p-3 rounded-xl">
-                <Sprout className="h-8 w-8 text-white" />
+    <div className="min-h-screen bg-gradient-to-br from-blanco-natural to-azul-cielo/30">
+      {/* Header con nueva paleta */}
+      <div className="bg-blanco-natural shadow-sm border-b border-verde-oliva/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-3">
+              <div className="bg-gradient-to-r from-verde-hoja to-verde-oliva p-2 rounded-lg">
+                <Sprout className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white">AgroPlan AgentNet</h1>
-                <p className="text-sm text-white opacity-90">Simulación y Planificación Agrícola con IA</p>
+                <h1 className="text-xl font-bold text-gris-piedra">AgroPlan AgentNet</h1>
+                <p className="text-sm text-gris-piedra/70">Simulación y Planificación Agrícola con IA</p>
               </div>
             </div>
-            <Button className="bg-verde-hoja hover:bg-verde-oliva text-white">
+            <Button variant="outline" className="border-verde-oliva text-gris-piedra hover:bg-verde-oliva/10">
               <Settings className="h-4 w-4 mr-2" />
               Configuración
             </Button>
@@ -208,74 +238,66 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Main Content con menú reorganizado */}
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <Tabs value={activeAgent} onValueChange={setActiveAgent} className="space-y-8">
-          {/* Menú principal reorganizado con colores sólidos */}
-          <div className="bg-white rounded-2xl shadow-lg p-4 border-2 border-verde-oliva">
-            <TabsList className="grid grid-cols-3 lg:grid-cols-6 w-full h-auto bg-blanco-natural gap-3">
-              <TabsTrigger 
-                value="farmer" 
-                className="flex flex-col items-center gap-2 h-20 rounded-xl bg-blanco-natural hover:bg-verde-hoja hover:text-white data-[state=active]:bg-verde-hoja data-[state=active]:text-white transition-all duration-300 border-2 border-transparent data-[state=active]:border-verde-hoja"
-              >
-                <Sprout className="h-6 w-6" />
-                <span className="text-sm font-medium">Mi Finca</span>
-              </TabsTrigger>
-              
-              <TabsTrigger 
-                value="overview" 
-                className="flex flex-col items-center gap-2 h-20 rounded-xl bg-blanco-natural hover:bg-tierra-calida hover:text-white data-[state=active]:bg-tierra-calida data-[state=active]:text-white transition-all duration-300 border-2 border-transparent data-[state=active]:border-tierra-calida"
-              >
-                <Activity className="h-6 w-6" />
-                <span className="text-sm font-medium">Vista General</span>
-              </TabsTrigger>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Tabs value={activeAgent} onValueChange={setActiveAgent} className="space-y-6">
+          <TabsList className="grid grid-cols-7 w-full h-20 bg-blanco-natural/80 backdrop-blur-sm border border-verde-oliva/20 rounded-2xl p-2">
+            <TabsTrigger 
+              value="farmer" 
+              className="flex flex-col items-center gap-2 h-full rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-verde-hoja data-[state=active]:to-verde-oliva data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-verde-oliva/10 transition-all duration-300"
+            >
+              <Sprout className="h-6 w-6" />
+              <span className="text-xs font-medium">Mi Finca</span>
+            </TabsTrigger>
+            
+            <TabsTrigger 
+              value="overview" 
+              className="flex flex-col items-center gap-2 h-full rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-tierra-calida data-[state=active]:to-amber-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-tierra-calida/10 transition-all duration-300"
+            >
+              <Activity className="h-6 w-6" />
+              <span className="text-xs font-medium">Vista General</span>
+            </TabsTrigger>
 
-              <TabsTrigger 
-                value="climate" 
-                className="flex flex-col items-center gap-2 h-20 rounded-xl bg-blanco-natural hover:bg-azul-cielo hover:text-gris-piedra data-[state=active]:bg-azul-cielo data-[state=active]:text-gris-piedra transition-all duration-300 border-2 border-transparent data-[state=active]:border-azul-cielo"
-              >
-                <Cloud className="h-6 w-6" />
-                <span className="text-sm font-medium">Clima</span>
-              </TabsTrigger>
+            <TabsTrigger 
+              value="climate" 
+              className="flex flex-col items-center gap-2 h-full rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-azul-cielo data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-azul-cielo/20 transition-all duration-300"
+            >
+              <Cloud className="h-6 w-6" />
+              <span className="text-xs font-medium">Clima</span>
+            </TabsTrigger>
 
-              <TabsTrigger 
-                value="crop" 
-                className="flex flex-col items-center gap-2 h-20 rounded-xl bg-blanco-natural hover:bg-verde-oliva hover:text-white data-[state=active]:bg-verde-oliva data-[state=active]:text-white transition-all duration-300 border-2 border-transparent data-[state=active]:border-verde-oliva"
-              >
-                <Sprout className="h-6 w-6" />
-                <span className="text-sm font-medium">Cultivos</span>
-              </TabsTrigger>
+            <TabsTrigger 
+              value="crop" 
+              className="flex flex-col items-center gap-2 h-full rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-verde-oliva data-[state=active]:to-verde-hoja data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-verde-oliva/10 transition-all duration-300"
+            >
+              <Sprout className="h-6 w-6" />
+              <span className="text-xs font-medium">Cultivos</span>
+            </TabsTrigger>
 
-              <TabsTrigger 
-                value="market" 
-                className="flex flex-col items-center gap-2 h-20 rounded-xl bg-blanco-natural hover:bg-tierra-calida hover:text-white data-[state=active]:bg-tierra-calida data-[state=active]:text-white transition-all duration-300 border-2 border-transparent data-[state=active]:border-tierra-calida"
-              >
-                <TrendingUp className="h-6 w-6" />
-                <span className="text-sm font-medium">Mercado</span>
-              </TabsTrigger>
+            <TabsTrigger 
+              value="market" 
+              className="flex flex-col items-center gap-2 h-full rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-tierra-calida data-[state=active]:to-amber-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-tierra-calida/10 transition-all duration-300"
+            >
+              <TrendingUp className="h-6 w-6" />
+              <span className="text-xs font-medium">Mercado</span>
+            </TabsTrigger>
 
-              <TabsTrigger 
-                value="scenario" 
-                className="flex flex-col items-center gap-2 h-20 rounded-xl bg-blanco-natural hover:bg-amarillo-maiz hover:text-gris-piedra data-[state=active]:bg-amarillo-maiz data-[state=active]:text-gris-piedra transition-all duration-300 border-2 border-transparent data-[state=active]:border-amarillo-maiz"
-              >
-                <Settings className="h-6 w-6" />
-                <span className="text-sm font-medium">Escenarios</span>
-              </TabsTrigger>
-            </TabsList>
-          </div>
+            <TabsTrigger 
+              value="scenario" 
+              className="flex flex-col items-center gap-2 h-full rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-amarillo-maiz data-[state=active]:to-orange-500 data-[state=active]:text-gris-piedra data-[state=active]:shadow-lg hover:bg-amarillo-maiz/20 transition-all duration-300"
+            >
+              <Settings className="h-6 w-6" />
+              <span className="text-xs font-medium">Escenarios</span>
+            </TabsTrigger>
 
-          {/* Submenú para reportes */}
-          <div className="bg-white rounded-xl shadow-md p-3 border-2 border-verde-oliva">
-            <TabsList className="grid grid-cols-1 w-full h-auto bg-blanco-natural">
-              <TabsTrigger 
-                value="report" 
-                className="flex items-center justify-center gap-3 h-16 rounded-xl bg-blanco-natural hover:bg-verde-hoja hover:text-white data-[state=active]:bg-verde-hoja data-[state=active]:text-white transition-all duration-300 border-2 border-transparent data-[state=active]:border-verde-hoja"
-              >
-                <FileText className="h-6 w-6" />
-                <span className="text-base font-medium">📄 Generador de Reportes</span>
-              </TabsTrigger>
-            </TabsList>
-          </div>
+            <TabsTrigger 
+              value="report" 
+              className="flex flex-col items-center gap-2 h-full rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-verde-hoja data-[state=active]:to-tierra-calida data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-verde-hoja/10 transition-all duration-300"
+            >
+              <FileText className="h-6 w-6" />
+              <span className="text-xs font-medium">Reportes</span>
+            </TabsTrigger>
+          </TabsList>
 
           <TabsContent value="farmer">
             <FarmerDashboard />
@@ -286,16 +308,19 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="climate">
-            <div className="min-h-screen bg-blanco-natural p-6">
+            <div className="min-h-screen bg-gradient-to-br from-blanco-natural via-azul-cielo/20 to-blue-100 p-4">
               <div className="max-w-6xl mx-auto">
-                <div className="bg-azul-cielo rounded-2xl p-8 text-gris-piedra mb-8">
-                  <div className="flex items-center gap-6">
-                    <div className="bg-white p-4 rounded-xl">
-                      <Cloud className="h-12 w-12 text-azul-cielo" />
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-azul-cielo to-blue-500 p-8 text-white mb-8">
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <Cloud className="h-24 w-24" />
+                  </div>
+                  <div className="relative z-10 flex items-center gap-6">
+                    <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
+                      <Cloud className="h-12 w-12" />
                     </div>
                     <div>
                       <h1 className="text-4xl font-bold mb-2">🌤️ Climate Forecaster</h1>
-                      <p className="text-lg">Análisis climático avanzado con IA</p>
+                      <p className="text-white/80 text-lg">Análisis climático avanzado con IA</p>
                     </div>
                   </div>
                 </div>
@@ -305,16 +330,19 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="crop">
-            <div className="min-h-screen bg-blanco-natural p-6">
+            <div className="min-h-screen bg-gradient-to-br from-blanco-natural via-verde-oliva/20 to-verde-hoja/20 p-4">
               <div className="max-w-6xl mx-auto">
-                <div className="bg-verde-oliva rounded-2xl p-8 text-white mb-8">
-                  <div className="flex items-center gap-6">
-                    <div className="bg-white p-4 rounded-xl">
-                      <Sprout className="h-12 w-12 text-verde-oliva" />
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-verde-oliva to-verde-hoja p-8 text-white mb-8">
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <Sprout className="h-24 w-24" />
+                  </div>
+                  <div className="relative z-10 flex items-center gap-6">
+                    <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
+                      <Sprout className="h-12 w-12" />
                     </div>
                     <div>
                       <h1 className="text-4xl font-bold mb-2">🌱 Crop Modeling</h1>
-                      <p className="text-lg">Simulación de rendimientos por cultivo</p>
+                      <p className="text-white/80 text-lg">Simulación de rendimientos por cultivo</p>
                     </div>
                   </div>
                 </div>
@@ -324,16 +352,19 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="market">
-            <div className="min-h-screen bg-blanco-natural p-6">
+            <div className="min-h-screen bg-gradient-to-br from-blanco-natural via-tierra-calida/20 to-amber-100 p-4">
               <div className="max-w-6xl mx-auto">
-                <div className="bg-tierra-calida rounded-2xl p-8 text-white mb-8">
-                  <div className="flex items-center gap-6">
-                    <div className="bg-white p-4 rounded-xl">
-                      <TrendingUp className="h-12 w-12 text-tierra-calida" />
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-tierra-calida to-amber-600 p-8 text-white mb-8">
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <TrendingUp className="h-24 w-24" />
+                  </div>
+                  <div className="relative z-10 flex items-center gap-6">
+                    <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
+                      <TrendingUp className="h-12 w-12" />
                     </div>
                     <div>
                       <h1 className="text-4xl font-bold mb-2">📈 Market Predictor</h1>
-                      <p className="text-lg">Proyecciones de precios y demanda</p>
+                      <p className="text-white/80 text-lg">Proyecciones de precios y demanda</p>
                     </div>
                   </div>
                 </div>
@@ -343,16 +374,19 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="scenario">
-            <div className="min-h-screen bg-blanco-natural p-6">
+            <div className="min-h-screen bg-gradient-to-br from-blanco-natural via-amarillo-maiz/20 to-orange-100 p-4">
               <div className="max-w-6xl mx-auto">
-                <div className="bg-amarillo-maiz rounded-2xl p-8 text-gris-piedra mb-8">
-                  <div className="flex items-center gap-6">
-                    <div className="bg-white p-4 rounded-xl">
-                      <Settings className="h-12 w-12 text-amarillo-maiz" />
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amarillo-maiz to-orange-500 p-8 text-gris-piedra mb-8">
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <Settings className="h-24 w-24" />
+                  </div>
+                  <div className="relative z-10 flex items-center gap-6">
+                    <div className="bg-gris-piedra/20 backdrop-blur-sm p-4 rounded-2xl">
+                      <Settings className="h-12 w-12" />
                     </div>
                     <div>
                       <h1 className="text-4xl font-bold mb-2">⚙️ Scenario Planner</h1>
-                      <p className="text-lg">Planificación estratégica integrada</p>
+                      <p className="text-gris-piedra/80 text-lg">Planificación estratégica integrada</p>
                     </div>
                   </div>
                 </div>
@@ -362,16 +396,19 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="report">
-            <div className="min-h-screen bg-blanco-natural p-6">
+            <div className="min-h-screen bg-gradient-to-br from-blanco-natural via-verde-hoja/20 to-tierra-calida/20 p-4">
               <div className="max-w-6xl mx-auto">
-                <div className="bg-verde-hoja rounded-2xl p-8 text-white mb-8">
-                  <div className="flex items-center gap-6">
-                    <div className="bg-white p-4 rounded-xl">
-                      <FileText className="h-12 w-12 text-verde-hoja" />
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-verde-hoja to-tierra-calida p-8 text-white mb-8">
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <FileText className="h-24 w-24" />
+                  </div>
+                  <div className="relative z-10 flex items-center gap-6">
+                    <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
+                      <FileText className="h-12 w-12" />
                     </div>
                     <div>
                       <h1 className="text-4xl font-bold mb-2">📄 Report Generator</h1>
-                      <p className="text-lg">Reportes automáticos multimodales</p>
+                      <p className="text-white/80 text-lg">Reportes automáticos multimodales</p>
                     </div>
                   </div>
                 </div>
