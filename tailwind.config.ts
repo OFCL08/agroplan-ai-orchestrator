@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -62,15 +61,7 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				},
-				// Paleta personalizada de agricultura
-				'verde-hoja': '#4CAF50',
-				'verde-oliva': '#A8C686',
-				'tierra-calida': '#8D6E63',
-				'amarillo-maiz': '#FFEB3B',
-				'azul-cielo': '#B3E5FC',
-				'blanco-natural': '#FAFAF4',
-				'gris-piedra': '#5E5E5E'
+				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
