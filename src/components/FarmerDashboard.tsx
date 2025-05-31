@@ -77,12 +77,12 @@ const FarmerDashboard = () => {
     { day: "VIE", temp: "23°", icon: Droplets, rain: "5mm", color: "from-purple-400 to-purple-600", textColor: "text-white" }
   ];
 
-  // Temperature value and color logic
+  // Temperature value and updated color logic
   const currentTemp = 20;
   const getTemperatureColor = (temp: number) => {
-    if (temp < 10) {
+    if (temp < 15) {
       return "from-blue-400 to-blue-600";
-    } else if (temp > 30) {
+    } else if (temp > 25) {
       return "from-red-400 to-red-600";
     } else {
       return "from-yellow-300 to-yellow-600";
