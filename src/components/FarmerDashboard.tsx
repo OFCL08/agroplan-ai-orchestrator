@@ -77,7 +77,7 @@ const FarmerDashboard = () => {
   ];
 
   const quickStats = [
-    { label: "Temperatura", value: "22°C", icon: Thermometer, color: "#FFEB3B", emoji: "🌡️" },
+    { label: "Temperatura", value: "22°C", icon: Thermometer, color: "bg-yellow-400", emoji: "🌡️" },
     { label: "Humedad", value: "78%", icon: Droplets, color: "from-blue-400 to-cyan-500", emoji: "💧" },
     { label: "Precio Café", value: "$2.85", icon: TrendingUp, color: "from-green-400 to-emerald-500", emoji: "📈" },
     { label: "Estado", value: "Óptimo", icon: Zap, color: "from-yellow-400 to-orange-500", emoji: "⚡" }
